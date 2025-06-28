@@ -1,28 +1,58 @@
 #pragma once
 #include <string>
+#include <iostream>
+#include <algorithm>
+
+#ifdef _WIN32
+    #include <windows.h> // Biblioteca específica do Windows para manipulação de console
+#endif
 
 /**
  * @brief Altera a cor do texto do console para a cor especificada.
- * 
+ *
  * Cores suportadas (case-insensitive):
  * - "vermelho" ou "red"
  * - "verde" ou "green"
  * - "azul" ou "blue"
- * 
+ *
  * Qualquer outro valor reseta a cor para o padrão do console.
  *
  * @param colorName Nome da cor, em português ou inglês.
  */
-void setColor(const std::string &colorName);
+inline void setColor(const std::string &colorName) {
+    std::string color = colorName;
+    std::transform(color.begin(), color.end(), color.begin(), ::tolower);
+    #ifdef _WIN32
+        HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+        if (color == "red" || color == "vermelho") SetConsoleTextAttribute(console, 12);
+        else if (color == "green" || color == "verde") SetConsoleTextAttribute(console, 10);
+        else if (color == "azul" || color == "blue") SetConsoleTextAttribute(console, 9);
+        else SetConsoleTextAttribute(console, 7);
+    #else
+        if (color == "red" || color == "vermelho") std::cout << "\033[1;31m";
+        else if (color == "green" || color == "verde") std::cout << "\033[1;32m";
+        else if (color == "azul" || color == "blue") std::cout << "\033[1;34m";
+        else std::cout << "\033[0m";
+    #endif
+}
 
 /**
  * @brief Reseta a cor do texto para o padrão do console.
  */
-void resetColor();
+inline void resetColor() {
+    setColor("");
+}
 
 /**
  * @brief Limpa o console, independente do sistema operacional.
- * 
+ *
  * Usa "cls" no Windows e "clear" no Linux/macOS.
  */
-void limparConsole();
+inline void limparConsole() {
+    std::cout << std::flush;
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}

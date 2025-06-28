@@ -1,43 +1,45 @@
-# 🎓 Portal Acadêmico em C++
+# Portal Acadêmico
 
-Projeto de terminal para simular um portal acadêmico com múltiplos usuários, feito com C++ e manipulação de arquivos.
+Projeto acadêmico em C++ para gestão de um portal universitário via terminal.  
+Contempla três subportais: Aluno, Professor e Administrador, com diferentes permissões e funcionalidades.
 
-## 🔧 Funcionalidades
+## 🚀 Funcionalidades atuais
 
-### Aluno
-- Registro com e-mail
-- Login com e-mail ou matrícula
-- Ver notas
-- Ver frequência
-- Registrar requerimentos
+- Menus interativos em terminal
+- Portal do Aluno, Professor e Administrador
+- Navegação simples e intuitiva
+- Cores no console (multiplataforma)
+- Limpeza automática do terminal
 
-### Professor
-- Login com e-mail ou SIAPE
-- Registrar notas
-- Registrar frequência
+## 📁 Estrutura do projeto
 
-### Administrador
-- Login
-- Cadastrar aluno
-- Cadastrar professor
-- Remover usuários
-- Visualizar requerimentos dos alunos
+.
+├── data # Arquivos .txt simulando o banco de dados
+├── docs # Documentação por etapas
+├── src
+│ ├── main.cpp # Código principal com menus
+│ └── utils
+│ └── ConsoleUtils.h
+├── LICENSE
+└── README.md
 
-## 💾 Tecnologias e Conceitos Utilizados
+## ⚙️ Tecnologias e técnicas utilizadas
 
-- C++ (Orientação a Objetos)
-- Manipulação de arquivos `.txt`
-- Hashing (planejado)
-- Pilha/Fila (planejado)
-- Regex (planejado para validações)
-- Alocação dinâmica
-- Organização em múltiplos arquivos `.cpp` e `.h`
+- C++ (compilação via g++)
+- Orientação a Objetos (em breve)
+- Manipulação de arquivos `.txt` para simular banco
+- ANSI Escape Codes (Linux/macOS) e `SetConsoleTextAttribute` (Windows)
+- `system("cls")` / `system("clear")` para limpeza do console
 
-## 📁 Estrutura de Pastas
+## 📌 Próximos passos
 
-portal-academico/
-├── src/ # Código-fonte
-├── docs/ # Documentação em Markdown
-├── .gitignore
-├── README.md
-└── LICENSE
+- Criar classes `Usuario`, `Aluno`, `Professor` e `Administrador`
+- Implementar cadastro e login (armazenamento em `/data`)
+- Sistema de requerimentos e controle de notas/frequência
+- Validação via regex
+- Posterior migração para banco de dados real
+
+## 📜 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+

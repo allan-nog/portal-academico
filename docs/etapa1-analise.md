@@ -28,14 +28,14 @@ Definir os requisitos funcionais e não-funcionais do portal acadêmico.
 - Ver requerimentos dos alunos
 
 ## Decisões técnicas até aqui
-- Sistema em C++, rodando em terminal
-- Armazenamento inicial em arquivos `.txt`
-- Posteriormente, banco de dados poderá ser adicionado
-- Organização orientada a objetos
-- Login pode ser via e-mail ou matrícula/SIAPE
-- Registro obrigatório via e-mail
+- Sistema implementado em C++ (rodando via terminal)
+- Armazenamento inicial em arquivos `.txt` na pasta `/data`
+- Organização orientada a objetos planejada
+- Login via e-mail ou matrícula/SIAPE
+- Registro inicial obrigatório por e-mail
+- Posteriormente o sistema poderá migrar para uso de banco de dados.
 
-## Observações
-- Aluno pode se registrar; professor só cadastrado pelo administrador
-- Administrador vê requerimentos registrados pelos alunos
-- O projeto será desenvolvido por etapas com documentação contínua
+## Observações gerais
+- Aluno registra-se sozinho; professor é cadastrado pelo administrador.
+- Administrador possui visão dos requerimentos dos alunos.
+- Projeto será desenvolvido por etapas com documentação incremental.

@@ -1,14 +1,14 @@
 # Etapa 2 – Definição dos Fluxos de Uso (Menus)
 
+## Menu Principal
 
-## Tela Inicial (Menu Principal)
 ===== PORTAL ACADÊMICO =====
 
-Escolha seu portal:
 [1] Portal do Aluno
 [2] Portal do Professor
 [3] Portal do Administrador
 [0] Sair
+---
 
 
 ## Portal do Aluno
@@ -19,7 +19,7 @@ Escolha seu portal:
 [2] Login
 [0] Voltar ao menu principal
 
-### Após login:
+### Após login
 
 ===== MENU DO ALUNO =====
 
@@ -39,7 +39,7 @@ Bem-vindo, [Nome do Aluno]
 [1] Login
 [0] Voltar ao menu principal
 
-### Após login:
+### Após login
 
 ===== MENU DO PROFESSOR =====
 
@@ -58,7 +58,7 @@ Bem-vindo, [Nome do Professor]
 [1] Login
 [0] Voltar ao menu principal
 
-### Após login:
+### Após login
 
 ===== MENU DO ADMINISTRADOR =====
 
@@ -69,11 +69,3 @@ Bem-vindo, Administrador
 [3] Remover usuário
 [4] Ver requerimentos dos alunos
 [0] Logout
----
-
-## Observações
-
-- Aluno registra-se sozinho via e-mail
-- Professor é cadastrado pelo administrador
-- Login pode ser feito com matrícula/SIAPE ou e-mail
-- Requerimentos são armazenados e visíveis ao administrador
