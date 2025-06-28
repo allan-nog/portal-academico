@@ -5,53 +5,35 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 ---
 
 ## 📌 A FAZER
-- Criar classe base `Usuario` (nome, email, senha)
-- Criar classe `Aluno` herdando `Usuario`
-- Criar classe `Professor` herdando `Usuario`
-- Criar classe `Administrador`
-- Implementar persistência em arquivos `.txt` para:
-    - Alunos
-    - Professores
-    - Notas
-    - Frequência
-    - Requerimentos
-- Implementar login e registro:
-    - Registro de aluno via e-mail
-    - Login do aluno (email/matrícula)
-    - Login do professor (email/SIAPE)
-    - Login do administrador
-- Implementar menus pós-login:
-    - Menu do aluno (ver notas, frequência, registrar requerimento)
-    - Menu do professor (registrar notas, frequência)
-    - Menu do administrador (cadastrar/remover usuários, ver requerimentos)
-- Validar entradas com Regex
-- Tratar erros e exceções ao abrir/ler/gravar arquivos
-- Criar documentação `README.md` final detalhada
+- Implementar sistema de login completo (autenticação e controle de sessão)
+- Criar classes e funcionalidades para `Administrador` e `Request`
+- Implementar persistência avançada com leitura/escrita organizada nos arquivos `.txt` na pasta `/data`
+- Validar entradas de dados com Regex (e-mail, matrícula, senha, SIAPE, etc)
+- Criar testes unitários para as classes principais
+- Melhorar modularidade e reaproveitamento de código (refatoração)
+- Documentar novas etapas conforme avanço do projeto
 
 ---
 
 ## 🚧 EM ANDAMENTO
-- Menus iniciais com cor e limpeza do console
-- Organização do projeto em pastas (`src`, `docs`, `data`, `utils`)
+- Implementação das classes base `User`, `Student` e `Teacher` com seus atributos e métodos
+- Menus básicos no terminal com navegação entre portais (aluno, professor, administrador)
+- Utilitários para manipulação de console (cores, limpeza de tela, menus)
+- Documentação das etapas 1 a 4 (análise, fluxos, modelagem, implementação inicial)
 
 ---
 
 ## ✅ FEITO
-- Estrutura de pastas do projeto definida
-- ConsoleUtils com:
-    - Funções inline `setColor`, `resetColor`, `limparConsole`
-- Menu principal com chamadas para:
-    - Portal do aluno
-    - Portal do professor
-    - Portal do administrador
-- Documentação das etapas:
-    - `etapa1-analise.md`
-    - `etapa2-fluxos.md`
-    - `etapa3-modelagem.md`
+- Definição da análise de requisitos e levantamento das funcionalidades
+- Modelagem UML e estruturação das classes
+- Estrutura de pastas do projeto definida (`src/core`, `src/utils`, `data`, `docs`, `tests`)
+- Funções `setColor`, `resetColor` e `limparConsole` implementadas e testadas
+- Menus interativos implementados com feedback colorido no terminal
+- Documentação das etapas iniciais criada (`etapa1-analise.md`, `etapa2-fluxos.md`, `etapa3-initial-implementation.md`, `etapa4-classes.md`)
 
 ---
 
 ## 📝 Observações
-- Por enquanto, todos os dados serão salvos em arquivos `.txt`. 
-- Posteriormente o projeto poderá migrar para banco de dados.
-- Sempre atualizar este Kanban ao iniciar / concluir tarefas.
+- Dados atualmente armazenados em arquivos `.txt`, com possibilidade de migração futura para banco de dados
+- Kanban deve ser atualizado conforme progresso e revisão de prioridades
+- Prioridade em manter código limpo, modular e documentado para facilitar manutenção e expansão
