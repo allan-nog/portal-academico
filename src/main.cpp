@@ -1,5 +1,6 @@
 #include <iostream>
 #include "utils/ConsoleUtils.h"
+#include "utils/UserUtils.h"
 using namespace std;
 
 void studentPortal(){
@@ -24,7 +25,7 @@ void studentPortal(){
         }
         switch (studentOption) {
             case 1:
-                cout << "FUNÇÃO DE CADASTRAR ALUNO\n";
+                registerUser();
                 break;
             case 2:
                 cout << "FUNÇÃO DE LOGAR\n";
