@@ -1,18 +1,25 @@
 #include <iostream>
+#include "utils/ConsoleUtils.h"
 using namespace std;
 
 void studentPortal(){
     int studentOption;
     while (true) {
+        setColor("azul");
         cout << "\n--------- PORTAL DO ALUNO ----------\n";
+        resetColor();
         cout << "[1] - Registrar novo aluno\n";
         cout << "[2] - Login\n";
         cout << "[0] - Voltar ao menu principal\n" ;
+        setColor("azul");
         cout << "------------------------------------\n";
+        resetColor();
         cout << "Selecione uma opcao: ";
+        setColor("verde");
         cin >> studentOption;
+        resetColor();
+        limparConsole();
         if (studentOption == 0){
-            cout << "\n---------- VOLTANDO AO MENU PRINCIPAL -----------\n";
             break;
         }
         switch (studentOption) {
@@ -23,7 +30,9 @@ void studentPortal(){
                 cout << "FUNÇÃO DE LOGAR\n";
                 break;
             default:
+                setColor("vermelho");
                 cout << "\nOpcao invalida.\n";
+                resetColor();
                 break;
         }
     }
@@ -32,14 +41,20 @@ void studentPortal(){
 void teacherPortal(){
     int teacherOption;
     while (true) {
+        setColor("azul");
         cout << "\n-------- PORTAL DO PROFESSOR ---------\n";
+        resetColor();
         cout << "[1] - Login\n";
         cout << "[0] - Voltar ao menu principal\n" ;
+        setColor("azul");
         cout << "--------------------------------------\n";
+        resetColor();
         cout << "Selecione uma opcao: ";
+        setColor("verde");
         cin >> teacherOption;
+        resetColor();
+        limparConsole();
         if (teacherOption == 0){
-            cout << "\n---------- VOLTANDO AO MENU PRINCIPAL -----------\n";
             break;
         }
         switch (teacherOption) {
@@ -47,7 +62,9 @@ void teacherPortal(){
                 cout << "FUNÇÃO DE LOGAR\n";
                 break;
             default:
+                setColor("vermelho");
                 cout << "\nOpcao invalida.\n";
+                resetColor();
                 break;
         }
     }
@@ -56,14 +73,20 @@ void teacherPortal(){
 void adminPortal(){
     int adminOption;
     while (true) {
+        setColor("azul");
         cout << "\n------ PORTAL DO ADMINISTRADOR -------\n";
+        resetColor();
         cout << "[1] - Login\n";
         cout << "[0] - Voltar ao menu principal\n" ;
+        setColor("azul");
         cout << "--------------------------------------\n";
+        resetColor();
         cout << "Selecione uma opcao: ";
+        setColor("verde");
         cin >> adminOption;
+        resetColor();
+        limparConsole();
         if (adminOption == 0){
-            cout << "\n---------- VOLTANDO AO MENU PRINCIPAL -----------\n";
             break;
         }
         switch (adminOption) {
@@ -71,27 +94,37 @@ void adminPortal(){
                 cout << "FUNÇÃO DE LOGAR\n";
                 break;
             default:
+                setColor("vermelho");
                 cout << "\nOpcao invalida.\n";
+                resetColor();
                 break;
         }
     }
-    cout << "\n\nFUNCIONALIDADES DO ADMINISTRADOR\n\n";
 }
 
 int main(){
 
     int option;
     while (true){
+        setColor("azul");
         cout << "\n---------- MENU DO SISTEMA ----------\n";
+        resetColor();
         cout << "[1] - Portal do Aluno\n";
         cout << "[2] - Portal do Professor\n";
         cout << "[3] - Portal do Administrador\n" ;
         cout << "[0] - Sair\n";
+        setColor("azul");
         cout << "-------------------------------------\n";
+        resetColor();
         cout << "Selecione uma opcao: ";
+        setColor("verde");
         cin >> option;
+        resetColor();
+        limparConsole();
         if (option == 0){
-            cout << "\n---------- PROGRAMA ENCERRADO -----------\n";
+            setColor("azul");
+            cout << "\n-------- PROGRAMA ENCERRADO ---------\n";
+            resetColor();
             break;
         }
         switch (option) {
@@ -105,7 +138,9 @@ int main(){
                 adminPortal();
                 break;
             default:
+                setColor("vermelho");
                 cout << "\nOpcao invalida.\n";
+                resetColor();
                 break;
         }
     }
