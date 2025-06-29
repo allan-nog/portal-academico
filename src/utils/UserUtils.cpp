@@ -2,9 +2,46 @@
 #include "ConsoleUtils.h"
 #include "Validador.h"
 #include "../core/User.h"
+#include "../core/Student.h"
+#include "../core/Teacher.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
+
+void saveStudent(const Student& student) {
+    std::ofstream file("data/students.txt", std::ios::app);
+    if (!file.is_open()) {
+        std::cerr << "Erro ao abrir o arquivo data/students.txt!" << std::endl;
+        return;
+    }
+    file << student.getName() << ";"
+         << student.getEmail() << ";"
+         << student.getPassword() << ";"
+         << student.getRegistration() << ";"
+         << student.getCourse() << ";"
+         << student.getPeriod() << "\n";
+    file.close();
+    setColor("green");
+    cout << "\nAluno salvo com sucesso!" << endl;
+    resetColor();
+}
+
+void saveTeacher(const Teacher& teacher) {
+    std::ofstream file("data/teachers.txt", std::ios::app);
+    if (!file.is_open()) {
+        std::cerr << "Erro ao abrir o arquivo data/teachers.txt!" << std::endl;
+        return;
+    }
+    file << teacher.getName() << ";"
+         << teacher.getEmail() << ";"
+         << teacher.getPassword() << ";"
+         << teacher.getSiape() << "\n";
+    file.close();
+    setColor("green");
+    cout << "\nProfessor salvo com sucesso!" << endl;
+    resetColor();
+}
 
 int registerUser(const string &userType) {
     string name, email, passwordEntered, confirmationPasswordEntered;
@@ -69,12 +106,13 @@ int registerUser(const string &userType) {
         }
     }
     
-    setColor("green");
-    cout << "\nUsuário registrado com sucesso!\n";
-    resetColor();
-
-    // Aqui no futuro poderá salvar no arquivo correspondente
-    // ex: saveUser(User(name, email, passwordEntered), userType);
+    if (userType == "student") {
+        Student student(name, email, passwordEntered, 12345, "<desconhecido>", 0);
+        saveStudent(student);
+    } else if (userType == "teacher") {
+        Teacher teacher(name, email, passwordEntered, 0);
+        saveTeacher(teacher);
+    }
 
     return 0;
 }
