@@ -8,14 +8,14 @@ using namespace std;
 
 int registerUser(const string &userType) {
     string name, email, passwordEntered, confirmationPasswordEntered;
-    bool nameIsValid = false, emailIsValid = false, isRegistered = false;
+    bool nameIsValid = false, emailIsValid = false, passwordIsValid = false, isRegistered = false;
 
     setColor("blue");
     cout << "\n-------- CADASTRO NO SISTEMA --------\n";
     resetColor();
 
     while (!nameIsValid) {
-        cout << "Digite seu nome: "; 
+        cout << "Digite seu nome completo: "; 
         getline(cin, name);
 
         if (!validateName(name)) {
@@ -30,7 +30,7 @@ int registerUser(const string &userType) {
         cout << "Digite seu e-mail: ";
         getline(cin, email);
 
-        if (validateEmail(email)) {
+        if (validateEmail(email, userType)) {
             emailIsValid = true;
         } else {
             setColor("red");
@@ -41,33 +41,36 @@ int registerUser(const string &userType) {
         // Aqui futuramente fará verificação se já existe cadastrado (em students.txt ou teachers.txt)
     }
 
-    cout << "Digite sua senha: ";
-    getline(cin, passwordEntered);
-    if (!validatePassword(passwordEntered)) {
-        setColor("red");
-        cout << "Senha não atende aos requisitos.\n";
-        resetColor();
-        return -1;
-    }
+    while (!passwordIsValid) {
+        cout << "Digite sua senha: ";
+        getline(cin, passwordEntered);
+        if (!validatePassword(passwordEntered)) {
+            setColor("red");
+            cout << "Senha não atende aos requisitos.\n";
+            resetColor();
+            continue;
+        }
 
-    cout << "Confirme sua senha: ";
-    getline(cin, confirmationPasswordEntered);
-    if (!validatePassword(confirmationPasswordEntered)) {
-        setColor("red");
-        cout << "Senha de confirmação não atende aos requisitos.\n";
-        resetColor();
-        return -1;
-    }
+        cout << "Confirme sua senha: ";
+        getline(cin, confirmationPasswordEntered);
+        if (!validatePassword(confirmationPasswordEntered)) {
+            setColor("red");
+            cout << "Senha de confirmação não atende aos requisitos.\n";
+            resetColor();
+            continue;
+        }
 
-    if (passwordEntered != confirmationPasswordEntered) {
-        setColor("red");
-        cout << "As senhas não coincidem.\n";
-        resetColor();
-        return -3;
+        if (passwordEntered != confirmationPasswordEntered) {
+            setColor("red");
+            cout << "As senhas não coincidem.\n";
+            resetColor();
+        } else {
+            passwordIsValid = true;
+        }
     }
-
+    
     setColor("green");
-    cout << "Usuário registrado com sucesso!\n";
+    cout << "\nUsuário registrado com sucesso!\n";
     resetColor();
 
     // Aqui no futuro poderá salvar no arquivo correspondente
