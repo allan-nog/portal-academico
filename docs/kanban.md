@@ -18,8 +18,9 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 ## 🚧 EM ANDAMENTO
 - Implementação das classes base `User`, `Student` e `Teacher` com seus atributos e métodos
 - Menus básicos no terminal com navegação entre portais (aluno, professor, administrador)
+- Função de cadastro de usuários com validações completas (nome, email, senha)
 - Utilitários para manipulação de console (cores, limpeza de tela, menus)
-- Documentação das etapas 1 a 4 (análise, fluxos, modelagem, implementação inicial)
+- Documentação das etapas 1 a 5 (análise, fluxos, modelagem, implementação inicial, portais e cadastro)
 
 ---
 
@@ -30,6 +31,7 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 - Funções `setColor`, `resetColor` e `limparConsole` implementadas e testadas
 - Menus interativos implementados com feedback colorido no terminal
 - Documentação das etapas iniciais criada (`etapa1-analise.md`, `etapa2-fluxos.md`, `etapa3-initial-implementation.md`, `etapa4-classes.md`)
+- Implementação do menu principal e portais no `main.cpp`
 
 ---
 
