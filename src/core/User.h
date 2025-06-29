@@ -12,6 +12,7 @@ protected:
     std::string email;
     std::string password;
 public:
+    User() : name(""), email(""), password("") {}  // <<<<<< adiciona este construtor
     User(const std::string& name, const std::string& email, const std::string& password);
     
     // getters retornando referência constante

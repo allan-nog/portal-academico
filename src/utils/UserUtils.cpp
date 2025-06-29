@@ -9,9 +9,10 @@
 #include <sstream>
 using namespace std;
 
+// Salva Student
 void saveStudent(const Student& student) {
     ofstream file("data/students.txt", ios::app);
-    if (!file.is_open()) {
+    if (!file) {
         cerr << "Erro ao abrir o arquivo data/students.txt!" << endl;
         return;
     }
@@ -21,15 +22,16 @@ void saveStudent(const Student& student) {
          << student.getRegistration() << ";"
          << student.getCourse() << ";"
          << student.getPeriod() << "\n";
-    file.close();
+
     setColor("green");
     cout << "\nAluno salvo com sucesso!" << endl;
     resetColor();
 }
 
+// Salva Teacher
 void saveTeacher(const Teacher& teacher) {
     ofstream file("data/teachers.txt", ios::app);
-    if (!file.is_open()) {
+    if (!file) {
         cerr << "Erro ao abrir o arquivo data/teachers.txt!" << endl;
         return;
     }
@@ -37,21 +39,19 @@ void saveTeacher(const Teacher& teacher) {
          << teacher.getEmail() << ";"
          << teacher.getPassword() << ";"
          << teacher.getSiape() << "\n";
-    file.close();
+
     setColor("green");
     cout << "\nProfessor salvo com sucesso!" << endl;
     resetColor();
 }
 
-// Verifica se o usuário existe pelo email
-bool userExists(const string& email, const string& userType) {
+// Carrega um usuário pelo email, opcionalmente retorna o User
+bool loadUser(const string& email, const string& userType, User* userOut) {
     string filePath;
 
-    if (userType == "student") {
-        filePath = "data/students.txt";
-    } else if (userType == "teacher") {
-        filePath = "data/teachers.txt";
-    } else {
+    if (userType == "student") filePath = "data/students.txt";
+    else if (userType == "teacher") filePath = "data/teachers.txt";
+    else {
         setColor("red");
         cerr << "Tipo de usuário inválido!\n";
         resetColor();
@@ -59,7 +59,7 @@ bool userExists(const string& email, const string& userType) {
     }
 
     ifstream inFile(filePath);
-    if (!inFile.is_open()) {
+    if (!inFile) {
         setColor("red");
         cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
         resetColor();
@@ -71,27 +71,31 @@ bool userExists(const string& email, const string& userType) {
         istringstream ss(line);
         string name, storedEmail, password;
         
-        // Para leitura de alunos ou professores, assume: name;email;password;...
         getline(ss, name, ';');
         getline(ss, storedEmail, ';');
         getline(ss, password, ';');
 
         if (storedEmail == email) {
-            return true; // Usuário existe
+            if (userOut != nullptr) {
+                *userOut = User(name, storedEmail, password);
+            }
+            return true;
         }
     }
 
     return false; // Não encontrado
 }
 
+// Função principal para registro de usuário
 int registerUser(const string &userType) {
     string name, email, passwordEntered, confirmationPasswordEntered;
-    bool nameIsValid = false, emailIsValid = false, passwordIsValid = false, isRegistered = false;
+    bool nameIsValid = false, emailIsValid = false, passwordIsValid = false;
 
     setColor("blue");
     cout << "\n-------- CADASTRO NO SISTEMA --------\n";
     resetColor();
 
+    // Nome
     while (!nameIsValid) {
         cout << "Digite seu nome completo: "; 
         getline(cin, name);
@@ -100,10 +104,10 @@ int registerUser(const string &userType) {
             setColor("red");
             cout << "Nome inválido. Tente novamente.\n";
             resetColor();
-        } else
-            nameIsValid = true;
+        } else nameIsValid = true;
     }
 
+    // Email
     while (!emailIsValid) {
         cout << "Digite seu e-mail: ";
         getline(cin, email);
@@ -112,15 +116,14 @@ int registerUser(const string &userType) {
             setColor("red");
             cout << "E-mail inválido para " << (userType == "student" ? "aluno" : "professor") << ". Tente novamente.\n";
             resetColor();
-        } else if (userExists(email, userType)) {
+        } else if (loadUser(email, userType)) {
             setColor("red");
             cout << "E-mail já cadastrado! Tente outro.\n";
             resetColor();
-        } else {
-            emailIsValid = true;
-        }
+        } else emailIsValid = true;
     }
 
+    // Senha
     while (!passwordIsValid) {
         cout << "Digite sua senha: ";
         getline(cin, passwordEntered);
@@ -133,22 +136,14 @@ int registerUser(const string &userType) {
 
         cout << "Confirme sua senha: ";
         getline(cin, confirmationPasswordEntered);
-        if (!validatePassword(confirmationPasswordEntered)) {
-            setColor("red");
-            cout << "Senha de confirmação não atende aos requisitos.\n";
-            resetColor();
-            continue;
-        }
-
         if (passwordEntered != confirmationPasswordEntered) {
             setColor("red");
             cout << "As senhas não coincidem.\n";
             resetColor();
-        } else {
-            passwordIsValid = true;
-        }
+        } else passwordIsValid = true;
     }
     
+    // Salva no arquivo adequado
     if (userType == "student") {
         Student student(name, email, passwordEntered, 12345, "<desconhecido>", 0);
         saveStudent(student);
@@ -157,5 +152,39 @@ int registerUser(const string &userType) {
         saveTeacher(teacher);
     }
 
+    return 0;
+}
+
+// Login genérico
+int loginUser(const string& userType, User& userOut) {
+    string email, password;
+
+    setColor("blue");
+    cout << "\n---------- ENTRE NO SISTEMA ----------\n";
+    resetColor();
+
+    cout << "Digite o e-mail: ";
+    getline(cin, email);
+
+    cout << "Digite a senha: ";
+    getline(cin, password);
+
+    if (!loadUser(email, userType, &userOut)) {
+        setColor("red");
+        cout << "Usuário não encontrado ou erro ao carregar dados.\n";
+        resetColor();
+        return -1;
+    }
+
+    if (userOut.getPassword() != password) {
+        setColor("red");
+        cout << "Senha incorreta.\n";
+        resetColor();
+        return -2;
+    }
+
+    setColor("green");
+    cout << "Login realizado com sucesso!\n";
+    resetColor();
     return 0;
 }

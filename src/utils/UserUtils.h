@@ -1,44 +1,52 @@
 #pragma once
 #include <string>
+#include "../core/User.h"
 #include "../core/Student.h"
 #include "../core/Teacher.h"
 
 /**
- * @brief Função responsável por registrar um usuário no sistema.
- * 
- * Faz a coleta do nome, email e senha, validando cada entrada.
- * Posteriormente poderá salvar o usuário em arquivo e garantir
- * unicidade do email.
- * 
- * @param userType Tipo do usuário ("student", "teacher", "admin").
- * @return int
- * -  0: sucesso
- * - -1: senha inválida
- * - -2: nome inválido
- * - -3: senhas não coincidem
- */
-int registerUser(const std::string &userType);
-
-/**
- * @brief Salva os dados de um estudante no arquivo correspondente.
- * 
- * @param student Objeto Student a ser salvo.
+ * @brief Salva um estudante no arquivo de dados.
+ * @param student Instância do Student a ser salva.
  */
 void saveStudent(const Student& student);
 
 /**
- * @brief Salva os dados de um professor no arquivo correspondente.
- * 
- * @param teacher Objeto Teacher a ser salvo.
+ * @brief Salva um professor no arquivo de dados.
+ * @param teacher Instância do Teacher a ser salva.
  */
 void saveTeacher(const Teacher& teacher);
 
 /**
- * @brief Verifica se um usuário já existe no sistema com base no email e tipo.
+ * @brief Carrega um usuário do arquivo com base no e-mail.
  * 
- * @param email Email do usuário para verificação.
- * @param userType Tipo do usuário ("student", "teacher").
- * @return true Se o usuário já existir.
- * @return false Se o usuário não existir.
+ * Procura em data/students.txt ou data/teachers.txt dependendo do userType.
+ * Se userOut não for nulo, preenche o objeto User com os dados carregados.
+ * 
+ * @param email Email do usuário a ser buscado.
+ * @param userType Tipo do usuário ("student" ou "teacher").
+ * @param userOut Ponteiro opcional para armazenar o usuário carregado.
+ * @return true se o usuário foi encontrado, false caso contrário.
  */
-bool userExists(const std::string& email, const std::string& userType);
+bool loadUser(const std::string& email, const std::string& userType, User* userOut = nullptr);
+
+/**
+ * @brief Registra um novo usuário (student ou teacher) interativamente via terminal.
+ * 
+ * @param userType Tipo do usuário ("student" ou "teacher").
+ * @return 
+ *  0 se cadastro realizado,
+ * -1 se erro genérico.
+ */
+int registerUser(const std::string &userType);
+
+/**
+ * @brief Função genérica para login de usuário (student ou teacher).
+ * 
+ * @param userType Tipo do usuário ("student" ou "teacher").
+ * @param userOut Objeto User que receberá os dados do usuário autenticado.
+ * @return 
+ *  0 se login realizado com sucesso, 
+ * -1 se usuário não encontrado, 
+ * -2 se senha incorreta.
+ */
+int loginUser(const std::string& userType, User& userOut);

@@ -28,9 +28,13 @@ void studentPortal(){
             case 1:
                 registerUser("student");
                 break;
-            case 2:
-                cout << "FUNÇÃO DE LOGAR\n";
+            case 2: {
+                User user;
+                if (loginUser("student", user) == 0)
+                    cout << "Bem vindo, " << user.getName() << "!\n";
                 break;
+            }
+                
             default:
                 setColor("vermelho");
                 cout << "\nOpcao invalida.\n";

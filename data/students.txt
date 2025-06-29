@@ -1,3 +1,4 @@
-Allan Pinto Nogueira;allan@aluno.elite.br;allan123;12345;Ciência da Computação;1
-Allan Pinto Nogueira;allan@aluno.elite.br;allan123;12345;Ciência da Computação;1
-Allan Pinto Nogueira;allan2@aluno.elite.br;allan1239;12345;<desconhecido>;0
+allan pinto;allan@aluno.elite.br;allan123;12345;<desconhecido>;0
+allan pintu;allan5@aluno.elite.br;allan123;12345;<desconhecido>;0
+Allan Nogueira;allan10@aluno.elite.br;allan123;12345;<desconhecido>;0
+Allan Pinto Nogueira;allannog@aluno.elite.br;allan2304;12345;<desconhecido>;0
