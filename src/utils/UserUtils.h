@@ -1,17 +1,18 @@
 #pragma once
-#include <iostream>
-#include "ConsoleUtils.h"
-#include "../core/User.h"
-using namespace std;
+#include <string>
 
-void registerUser(){
-    string name, email, password;
-    setColor("blue");
-    cout << "------ CADASTRO NO SISTEMA ----------\n" << endl;
-    resetColor();
-
-    cout << "Digite seu nome: ";
-    cin.ignore(); 
-    getline(cin, name);
-    cout << "Nome registrado: " << name << endl;
-}
+/**
+ * @brief Função responsável por registrar um usuário no sistema.
+ * 
+ * Faz a coleta do nome, email e senha, validando cada entrada.
+ * Posteriormente poderá salvar o usuário em arquivo e garantir
+ * unicidade do email.
+ * 
+ * @param userType Tipo do usuário ("student", "teacher", "admin").
+ * @return int
+ * -  0: sucesso
+ * - -1: senha inválida
+ * - -2: nome inválido
+ * - -3: senhas não coincidem
+ */
+int registerUser(const std::string &userType);

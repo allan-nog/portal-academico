@@ -18,6 +18,7 @@ void studentPortal(){
         cout << "Selecione uma opcao: ";
         setColor("verde");
         cin >> studentOption;
+        cin.ignore();
         resetColor();
         limparConsole();
         if (studentOption == 0){
@@ -25,7 +26,7 @@ void studentPortal(){
         }
         switch (studentOption) {
             case 1:
-                registerUser();
+                registerUser("student");
                 break;
             case 2:
                 cout << "FUNÇÃO DE LOGAR\n";
@@ -53,6 +54,7 @@ void teacherPortal(){
         cout << "Selecione uma opcao: ";
         setColor("verde");
         cin >> teacherOption;
+        cin.ignore();
         resetColor();
         limparConsole();
         if (teacherOption == 0){
@@ -85,6 +87,7 @@ void adminPortal(){
         cout << "Selecione uma opcao: ";
         setColor("verde");
         cin >> adminOption;
+        cin.ignore();
         resetColor();
         limparConsole();
         if (adminOption == 0){
@@ -120,6 +123,7 @@ int main(){
         cout << "Selecione uma opcao: ";
         setColor("verde");
         cin >> option;
+        cin.ignore();
         resetColor();
         limparConsole();
         if (option == 0){
