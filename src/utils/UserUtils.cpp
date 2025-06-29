@@ -6,13 +6,13 @@
 #include "../core/Teacher.h"
 #include <iostream>
 #include <fstream>
-
+#include <sstream>
 using namespace std;
 
 void saveStudent(const Student& student) {
-    std::ofstream file("data/students.txt", std::ios::app);
+    ofstream file("data/students.txt", ios::app);
     if (!file.is_open()) {
-        std::cerr << "Erro ao abrir o arquivo data/students.txt!" << std::endl;
+        cerr << "Erro ao abrir o arquivo data/students.txt!" << endl;
         return;
     }
     file << student.getName() << ";"
@@ -28,9 +28,9 @@ void saveStudent(const Student& student) {
 }
 
 void saveTeacher(const Teacher& teacher) {
-    std::ofstream file("data/teachers.txt", std::ios::app);
+    ofstream file("data/teachers.txt", ios::app);
     if (!file.is_open()) {
-        std::cerr << "Erro ao abrir o arquivo data/teachers.txt!" << std::endl;
+        cerr << "Erro ao abrir o arquivo data/teachers.txt!" << endl;
         return;
     }
     file << teacher.getName() << ";"
@@ -41,6 +41,47 @@ void saveTeacher(const Teacher& teacher) {
     setColor("green");
     cout << "\nProfessor salvo com sucesso!" << endl;
     resetColor();
+}
+
+// Verifica se o usuário existe pelo email
+bool userExists(const string& email, const string& userType) {
+    string filePath;
+
+    if (userType == "student") {
+        filePath = "data/students.txt";
+    } else if (userType == "teacher") {
+        filePath = "data/teachers.txt";
+    } else {
+        setColor("red");
+        cerr << "Tipo de usuário inválido!\n";
+        resetColor();
+        return false;
+    }
+
+    ifstream inFile(filePath);
+    if (!inFile.is_open()) {
+        setColor("red");
+        cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
+        resetColor();
+        return false;
+    }
+
+    string line;
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string name, storedEmail, password;
+        
+        // Para leitura de alunos ou professores, assume: name;email;password;...
+        getline(ss, name, ';');
+        getline(ss, storedEmail, ';');
+        getline(ss, password, ';');
+
+        if (storedEmail == email) {
+            return true; // Usuário existe
+        }
+    }
+
+    return false; // Não encontrado
 }
 
 int registerUser(const string &userType) {
@@ -67,15 +108,17 @@ int registerUser(const string &userType) {
         cout << "Digite seu e-mail: ";
         getline(cin, email);
 
-        if (validateEmail(email, userType)) {
-            emailIsValid = true;
-        } else {
+        if (!validateEmail(email, userType)) {
             setColor("red");
             cout << "E-mail inválido para " << (userType == "student" ? "aluno" : "professor") << ". Tente novamente.\n";
             resetColor();
+        } else if (userExists(email, userType)) {
+            setColor("red");
+            cout << "E-mail já cadastrado! Tente outro.\n";
+            resetColor();
+        } else {
+            emailIsValid = true;
         }
-
-        // Aqui futuramente fará verificação se já existe cadastrado (em students.txt ou teachers.txt)
     }
 
     while (!passwordIsValid) {
