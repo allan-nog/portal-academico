@@ -11,7 +11,7 @@
 using namespace std;
 
 // Função para gerar o hash seguro da senha (contém salt e parâmetros embutidos)        
-std::string hashPassword(const std::string& password) {
+string hashPassword(const string& password) {
     char hashed_password[crypto_pwhash_STRBYTES]; // Tamanho do buffer para o hash
 
     // Gere o hash da senha usando Argon2id
@@ -20,14 +20,14 @@ std::string hashPassword(const std::string& password) {
                            password.length(),
                            crypto_pwhash_OPSLIMIT_MODERATE, // Nível de operações (custo computacional)
                            crypto_pwhash_MEMLIMIT_MODERATE) != 0) { // Limite de memória
-        std::cerr << "Erro ao gerar hash. Memória insuficiente?" << std::endl; // Erro ao gerar o hash
+        cerr << "Erro ao gerar hash. Memória insuficiente?" << endl; // Erro ao gerar o hash
         return "";
     }
     return hashed_password;
 }
 
 // Função para verificar a senha
-bool verifyPassword(const std::string& password, const std::string& hashedPassword) {
+bool verifyPassword(const string& password, const string& hashedPassword) {
     // Verifica a senha contra o hash armazenado
     if (crypto_pwhash_str_verify(hashedPassword.c_str(),
                                  password.c_str(),
@@ -173,12 +173,14 @@ int registerUser(const string &userType) {
         } else passwordIsValid = true;
     }
     
+    string hashedPassword = hashPassword(passwordEntered);
+
     // Salva no arquivo adequado
     if (userType == "student") {
-        Student student(name, email, passwordEntered, 12345, "<desconhecido>", 0);
+        Student student(name, email, hashedPassword, 12345, "<desconhecido>", 0);
         saveStudent(student);
     } else if (userType == "teacher") {
-        Teacher teacher(name, email, passwordEntered, 0);
+        Teacher teacher(name, email, hashedPassword, 0);
         saveTeacher(teacher);
     }
 
@@ -208,7 +210,7 @@ int loginUser(const string& userType, User& userOut) {
         cout << "Digite a senha: ";
         getline(cin, password);
 
-        if (userOut.getPassword() == password) {
+        if (verifyPassword(password, userOut.getPassword())) {
             clearConsole();
             setColor("green");
             cout << "\nLogin realizado com sucesso!\n";
