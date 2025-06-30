@@ -94,7 +94,7 @@ int registerUser(const string &userType) {
     bool nameIsValid = false, emailIsValid = false, passwordIsValid = false;
 
     setColor("blue");
-    cout << "\n------------- CADASTRO NO SISTEMA -------------\n";
+    cout << "\n---------------- CADASTRO NO SISTEMA ----------------\n";
     resetColor();
 
     // Nome

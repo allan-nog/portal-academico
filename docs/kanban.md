@@ -5,42 +5,41 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 ---
 
 ## 📌 A FAZER
-- Finalizar menus principais para aluno, professor e administrador
-- Implementar sistema completo de login (autenticação e controle de sessão)
-- Criar classes e funcionalidades para `Administrador`
-- Implementar persistência avançada para administradores e funcionalidades futuras
-- Validar entradas de dados com Regex (e-mail, matrícula, senha, SIAPE etc.)
-- Criar testes unitários para funções principais (cadastro, login, manipulação de arquivos)
-- Refatorar e melhorar modularidade, reaproveitamento e organização do código
-- Documentar novas etapas e funcionalidades conforme o projeto avança
+- Implementar funcionalidades do administrador:
+  - Cadastro direto de aluno e professor
+  - Visualizar usuários cadastrados
+  - Remover usuários
+  - Visualizar requerimentos
+- Implementar sistema de requerimentos (aluno solicita, admin visualiza)
+- Criar funcionalidades para o professor lançar notas e frequência
+- Criar funcionalidades para o aluno visualizar notas e frequência
+- Implementar atualização de dados de perfil (aluno e professor)
+- Criar testes unitários para as classes e utilitários
+- Melhorar modularidade e reaproveitamento de código (refatoração)
+- Documentar novas etapas conforme avanço do projeto
 
 ---
 
 ## 🚧 EM ANDAMENTO
-- Implementação das classes base `User`, `Student` e `Teacher` com seus atributos e métodos
-- Menus básicos no terminal com navegação entre portais (aluno, professor, administrador)
-- Funções de cadastro de usuários com validações completas (nome, email, senha)
-- Funções para salvar e carregar usuários em arquivos `.txt` com separador `;`
-- Função genérica de login para alunos e professores com validação de senha
-- Utilitários para manipulação de console (cores, limpeza de tela, menus)
-- Documentação das etapas 1 a 6 (análise, fluxos, modelagem, implementação inicial, portais, cadastro e login)
+- Portal do administrador parcialmente implementado (login + menu, aguardando funcionalidades)
+- Estrutura de menus para o aluno e professor completa, mas algumas opções ainda pendentes
 
 ---
 
 ## ✅ FEITO
 - Definição da análise de requisitos e levantamento das funcionalidades
 - Modelagem UML e estruturação das classes
-- Estrutura de pastas do projeto definida (`src/core`, `src/utils`, `data`, `docs`, `tests`)
-- Implementação das funções `setColor`, `resetColor` e `limparConsole`
-- Menus interativos implementados com feedback colorido no terminal
-- Cadastro de alunos e professores com validações de entrada
-- Salvamento e carregamento de alunos e professores em arquivos `.txt`
-- Função genérica de login implementada e integrada ao sistema
-- Documentação das etapas iniciais criada (`etapa1-analise.md`, `etapa2-fluxos.md`, `etapa3-initial-implementation.md`, `etapa4-classes.md`, `etapa5-user-portal-implementations.md`, `etapa6-login.md`)
+- Estrutura de pastas do projeto (`src/core`, `src/utils`, `data`, `docs`, `tests`)
+- Funções utilitárias para console (`setColor`, `resetColor`, `clearConsole`)
+- Validações robustas na hora do cadastro de usuários
+- Sistema de login para alunos, professores e administrador, com controle de tentativas
+- Menus interativos implementados para aluno, professor e admin
+- Documentação das etapas anteriores (`etapa1-analise.md`, `etapa2-fluxos.md`, `etapa3-initial-implementation.md`, `etapa4-classes.md`, `stage5-user-portal-implementations.md`)
+- Criação de `TODO.md` para rastrear funcionalidades detalhadas
 
 ---
 
 ## 📝 Observações
-- Dados atualmente armazenados em arquivos `.txt`, com possibilidade futura de migração para banco de dados
-- Kanban será atualizado conforme progresso e revisão de prioridades
-- Prioridade em manter código limpo, modular e documentado para facilitar manutenção e expansão
+- Dados atualmente armazenados em arquivos `.txt` (pasta `/data`), com possibilidade de migração futura para banco de dados
+- O kanban deve ser atualizado conforme progresso, para manter a visão geral do projeto
+- Priorização em manter código limpo, modular e documentado para facilitar manutenção e expansão futura
