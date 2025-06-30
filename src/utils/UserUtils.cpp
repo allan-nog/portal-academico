@@ -7,7 +7,35 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <sodium.h> // Inclua o cabeçalho do libsodium
 using namespace std;
+
+// Função para gerar o hash seguro da senha (contém salt e parâmetros embutidos)        
+std::string hashPassword(const std::string& password) {
+    char hashed_password[crypto_pwhash_STRBYTES]; // Tamanho do buffer para o hash
+
+    // Gere o hash da senha usando Argon2id
+    if (crypto_pwhash_str(hashed_password,
+                           password.c_str(),
+                           password.length(),
+                           crypto_pwhash_OPSLIMIT_MODERATE, // Nível de operações (custo computacional)
+                           crypto_pwhash_MEMLIMIT_MODERATE) != 0) { // Limite de memória
+        std::cerr << "Erro ao gerar hash. Memória insuficiente?" << std::endl; // Erro ao gerar o hash
+        return "";
+    }
+    return hashed_password;
+}
+
+// Função para verificar a senha
+bool verifyPassword(const std::string& password, const std::string& hashedPassword) {
+    // Verifica a senha contra o hash armazenado
+    if (crypto_pwhash_str_verify(hashedPassword.c_str(),
+                                 password.c_str(),
+                                 password.length()) != 0) {
+        return false; // Senha incorreta
+    }
+    return true; // Senha correta
+}
 
 // Salva Student
 void saveStudent(const Student& student) {
@@ -202,3 +230,5 @@ int loginUser(const string& userType, User& userOut) {
     return -2; // Login bloqueado por excesso de tentativas
 
 }
+
+// Para compilar: g++ src/main.cpp src/core/*.cpp src/utils/*.cpp -o programa -lsodium

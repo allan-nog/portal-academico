@@ -1,4 +1,0 @@
-Allan Pinto Nogueira;allan@aluno.elite.br;allan123;12345;<desconhecido>;0
-Gustavo Pinto Nogueira;gustavo@aluno.elite.br;allan123;12345;<desconhecido>;0
-Carlos Eduardo;carlos@aluno.elite.br;allan123;12345;<desconhecido>;0
-Allan Pinto Nogueira;allan10@aluno.elite.br;allan123;12345;<desconhecido>;0
