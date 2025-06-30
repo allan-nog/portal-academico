@@ -1,2 +1,1 @@
-Allan Pinto Nogueira;allan@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$riSIvfG3keDenJov2pboHg$E4EiARR80YQJedfjPIOqkwW7Sd+xHLC4n/3FgRJ6DcQ;12345;<desconhecido>;0
-Carlos Eduardo da Silva Nogueira;edu@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$6t+61zdhkaJtquLUEgTwrQ$Cyg4o1tB0VWBmz07xQAaW7ztEvLd+42Rche+IYfT+vU;12345;<desconhecido>;0
+Allan Pinto Nogueira;allan@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$B7wKcLdJAp/WVpCIQVKjcQ$rqQXjqo2m6Zd59cGYSuRa7Mi5JjIdbsJw3lZ4c3QEnM;12345;<desconhecido>;0

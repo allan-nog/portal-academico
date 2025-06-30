@@ -37,8 +37,24 @@ bool verifyPassword(const string& password, const string& hashedPassword) {
     return true; // Senha correta
 }
 
+// Função para garantir que o arquivo sempre exista
+void ensureFileExists(const std::string& path) {
+    std::ifstream file(path);
+    if (!file) {
+        // Não existe, vamos criar
+        std::ofstream createFile(path);
+        if (!createFile) {
+            std::cerr << "Não foi possível criar o arquivo " << path << std::endl;
+        } else {
+            createFile.close();
+        }
+    }
+}
+
 // Salva Student
 void saveStudent(const Student& student) {
+    ensureFileExists("data/students.txt");
+
     ofstream file("data/students.txt", ios::app);
     if (!file) {
         cerr << "Erro ao abrir o arquivo data/students.txt!" << endl;
@@ -59,6 +75,7 @@ void saveStudent(const Student& student) {
 
 // Salva Teacher
 void saveTeacher(const Teacher& teacher) {
+    ensureFileExists("data/teachers.txt");
     ofstream file("data/teachers.txt", ios::app);
     if (!file) {
         cerr << "Erro ao abrir o arquivo data/teachers.txt!" << endl;
@@ -87,6 +104,8 @@ bool loadUser(const string& email, const string& userType, User* userOut) {
         resetColor();
         return false;
     }
+
+    ensureFileExists(filePath);
 
     ifstream inFile(filePath);
     if (!inFile) {
@@ -118,6 +137,14 @@ bool loadUser(const string& email, const string& userType, User* userOut) {
 
 // Função principal para registro de usuário
 int registerUser(const string &userType) {
+
+    // Garante o arquivo
+    if (userType == "student") {
+        ensureFileExists("data/students.txt");
+    } else if (userType == "teacher") {
+        ensureFileExists("data/teachers.txt");
+    }
+
     string name, email, passwordEntered, confirmationPasswordEntered;
     bool nameIsValid = false, emailIsValid = false, passwordIsValid = false;
 

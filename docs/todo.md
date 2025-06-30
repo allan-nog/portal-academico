@@ -7,7 +7,7 @@ Um checklist simplificado para acompanhar melhorias futuras e pendências técni
 ## 🔥 Funcionalidades futuras
 - [ ] Implementar bloqueio de login temporário (ex: 3 minutos após 5 tentativas falhadas)
 - [ ] Criar logs de auditoria de login (sucesso / falha / IP ou terminal)
-- [ ] Implementar cadastro e login para o Administrador
+- [x] Implementar cadastro e login para o Administrador
 - [ ] Permitir alteração de senha pelo usuário
 - [ ] Adicionar recuperação de senha (via pergunta secreta ou token)
 - [ ] Implementar sistema de permissões (restrições por tipo de usuário)
@@ -28,6 +28,8 @@ Um checklist simplificado para acompanhar melhorias futuras e pendências técni
 - [ ] Melhorar encapsulamento nas classes `Student` e `Teacher`
 - [ ] Separar responsabilidades dos utilitários de console e validações
 - [ ] Adicionar comentários Doxygen em todas as funções públicas
+- [x] Implementar persistência com hash seguro (Argon2id via libsodium) para senhas
+- [x] Garantir criação automática dos arquivos caso não existam (`ensureFileExists`)
 
 ---
 
@@ -37,4 +39,4 @@ Um checklist simplificado para acompanhar melhorias futuras e pendências técni
 
 ---
 
-✅ **Versão atual:** protótipo funcional com cadastro e login para alunos e professores, persistência em arquivos `.txt` e menus no terminal.
+✅ **Versão atual:** protótipo funcional com cadastro e login (alunos, professores e administrador), hash seguro de senhas, persistência em arquivos `.txt` e menus completos no terminal.
