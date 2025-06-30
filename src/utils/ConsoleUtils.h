@@ -27,11 +27,17 @@ inline void setColor(const std::string &colorName) {
         if (color == "red" || color == "vermelho") SetConsoleTextAttribute(console, 12);
         else if (color == "green" || color == "verde") SetConsoleTextAttribute(console, 10);
         else if (color == "azul" || color == "blue") SetConsoleTextAttribute(console, 9);
+        else if (color == "amarelo" || color == "yellow") SetConsoleTextAttribute(console, 6);
+        else if (color == "ciano" || color == "cyan") SetConsoleTextAttribute(console, 3);
+        else if (color == "magenta" || color == "purple") SetConsoleTextAttribute(console, 5);
         else SetConsoleTextAttribute(console, 7);
     #else
         if (color == "red" || color == "vermelho") std::cout << "\033[1;31m";
         else if (color == "green" || color == "verde") std::cout << "\033[1;32m";
         else if (color == "azul" || color == "blue") std::cout << "\033[1;34m";
+        else if (color == "amarelo" || color == "yellow") std::cout << "\033[1;33m";
+        else if (color == "ciano" || color == "cyan") std::cout << "\033[1;36m";
+        else if (color == "magenta" || color == "purple") std::cout << "\033[1;35m";
         else std::cout << "\033[0m";
     #endif
 }
@@ -48,7 +54,7 @@ inline void resetColor() {
  *
  * Usa "cls" no Windows e "clear" no Linux/macOS.
  */
-inline void limparConsole() {
+inline void clearConsole() {
     std::cout << std::flush;
     #ifdef _WIN32
         system("cls");

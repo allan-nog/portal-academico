@@ -23,6 +23,7 @@ void saveStudent(const Student& student) {
          << student.getCourse() << ";"
          << student.getPeriod() << "\n";
 
+    clearConsole();
     setColor("green");
     cout << "\nAluno salvo com sucesso!" << endl;
     resetColor();
@@ -40,6 +41,7 @@ void saveTeacher(const Teacher& teacher) {
          << teacher.getPassword() << ";"
          << teacher.getSiape() << "\n";
 
+    clearConsole();
     setColor("green");
     cout << "\nProfessor salvo com sucesso!" << endl;
     resetColor();
@@ -92,7 +94,7 @@ int registerUser(const string &userType) {
     bool nameIsValid = false, emailIsValid = false, passwordIsValid = false;
 
     setColor("blue");
-    cout << "\n-------- CADASTRO NO SISTEMA --------\n";
+    cout << "\n------------- CADASTRO NO SISTEMA -------------\n";
     resetColor();
 
     // Nome
@@ -155,19 +157,17 @@ int registerUser(const string &userType) {
     return 0;
 }
 
-// Login genérico
 int loginUser(const string& userType, User& userOut) {
+
     string email, password;
+    int attempts = 5;
 
     setColor("blue");
-    cout << "\n---------- ENTRE NO SISTEMA ----------\n";
+    cout << "\n-------------- ENTRE NO SISTEMA --------------\n";
     resetColor();
 
     cout << "Digite o e-mail: ";
     getline(cin, email);
-
-    cout << "Digite a senha: ";
-    getline(cin, password);
 
     if (!loadUser(email, userType, &userOut)) {
         setColor("red");
@@ -176,15 +176,29 @@ int loginUser(const string& userType, User& userOut) {
         return -1;
     }
 
-    if (userOut.getPassword() != password) {
-        setColor("red");
-        cout << "Senha incorreta.\n";
-        resetColor();
-        return -2;
+    while (attempts > 0) {
+        cout << "Digite a senha: ";
+        getline(cin, password);
+
+        if (userOut.getPassword() == password) {
+            clearConsole();
+            setColor("green");
+            cout << "\nLogin realizado com sucesso!\n";
+            resetColor();
+            return 0;
+        } else {
+            attempts--;
+            setColor("red");
+            if (attempts > 0) {
+                cout << "Senha incorreta. Tentativas restantes: " << attempts << "\n";
+            } else {
+                clearConsole();
+                cout << "Número máximo de tentativas excedido. Tente novamente mais tarde.\n";
+            }
+            resetColor();
+        }
     }
 
-    setColor("green");
-    cout << "Login realizado com sucesso!\n";
-    resetColor();
-    return 0;
+    return -2; // Login bloqueado por excesso de tentativas
+
 }

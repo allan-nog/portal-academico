@@ -20,7 +20,7 @@ void studentPortal(){
         cin >> studentOption;
         cin.ignore();
         resetColor();
-        limparConsole();
+        clearConsole();
         if (studentOption == 0){
             break;
         }
@@ -30,11 +30,13 @@ void studentPortal(){
                 break;
             case 2: {
                 User user;
-                if (loginUser("student", user) == 0)
-                    cout << "Bem vindo, " << user.getName() << "!\n";
+                if (loginUser("student", user) == 0){
+                    setColor("yellow");
+                    cout << "\nBem vindo, " << user.getName() << "!\n";
+                    resetColor();
+                }
                 break;
             }
-                
             default:
                 setColor("vermelho");
                 cout << "\nOpcao invalida.\n";
@@ -60,7 +62,7 @@ void teacherPortal(){
         cin >> teacherOption;
         cin.ignore();
         resetColor();
-        limparConsole();
+        clearConsole();
         if (teacherOption == 0){
             break;
         }
@@ -93,7 +95,7 @@ void adminPortal(){
         cin >> adminOption;
         cin.ignore();
         resetColor();
-        limparConsole();
+        clearConsole();
         if (adminOption == 0){
             break;
         }
@@ -129,7 +131,7 @@ int main(){
         cin >> option;
         cin.ignore();
         resetColor();
-        limparConsole();
+        clearConsole();
         if (option == 0){
             setColor("azul");
             cout << "\n-------- PROGRAMA ENCERRADO ---------\n";
