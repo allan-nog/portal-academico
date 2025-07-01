@@ -149,12 +149,12 @@ int registerUser(const string &userType) {
     bool nameIsValid = false, emailIsValid = false, passwordIsValid = false;
 
     setColor("blue");
-    cout << "\n---------------- CADASTRO NO SISTEMA ----------------\n";
+    cout << "\n-------------- CADASTRO NO SISTEMA --------------\n";
     resetColor();
 
     // Nome
     while (!nameIsValid) {
-        cout << "Digite seu nome completo: "; 
+        cout << "Nome completo: "; 
         getline(cin, name);
 
         if (!validateName(name)) {
@@ -166,7 +166,7 @@ int registerUser(const string &userType) {
 
     // Email
     while (!emailIsValid) {
-        cout << "Digite seu e-mail: ";
+        cout << "Digite o e-mail: ";
         getline(cin, email);
 
         if (!validateEmail(email, userType)) {
@@ -182,7 +182,7 @@ int registerUser(const string &userType) {
 
     // Senha
     while (!passwordIsValid) {
-        cout << "Digite sua senha: ";
+        cout << "Digite a senha: ";
         getline(cin, passwordEntered);
         if (!validatePassword(passwordEntered)) {
             setColor("red");
@@ -191,7 +191,7 @@ int registerUser(const string &userType) {
             continue;
         }
 
-        cout << "Confirme sua senha: ";
+        cout << "Confirme a senha: ";
         getline(cin, confirmationPasswordEntered);
         if (passwordEntered != confirmationPasswordEntered) {
             setColor("red");
@@ -220,7 +220,7 @@ int loginUser(const string& userType, User& userOut) {
     int attempts = 5;
 
     setColor("blue");
-    cout << "\n-------------- ENTRE NO SISTEMA --------------\n";
+    cout << "\n--------------- ENTRE NO SISTEMA ---------------\n";
     resetColor();
 
     cout << "Digite o e-mail: ";
@@ -260,4 +260,172 @@ int loginUser(const string& userType, User& userOut) {
 
 }
 
-// Para compilar: g++ src/main.cpp src/core/*.cpp src/utils/*.cpp -o programa -lsodium
+void listUsers(const std::string& userType) {
+    std::string filePath;
+    if (userType == "student") filePath = "data/students.txt";
+    else if (userType == "teacher") filePath = "data/teachers.txt";
+    else {
+        setColor("red");
+        std::cerr << "Tipo de usuário inválido!\n";
+        resetColor();
+        return;
+    }
+
+    std::ifstream inFile(filePath);
+    if (!inFile) {
+        setColor("red");
+        std::cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
+        resetColor();
+        return;
+    }
+
+    std::string line;
+    bool hasUsers = false;
+    while (getline(inFile, line)) {
+        hasUsers = true;
+        std::istringstream ss(line);
+        std::string name, email, password;
+
+        getline(ss, name, ';');
+        getline(ss, email, ';');
+        getline(ss, password, ';');
+
+        setColor("yellow");
+        std::cout << "Nome: " << name << "\n";
+        std::cout << "Email: " << email << "\n";
+        std::cout << "Senha: " << password << " (hash ou texto)\n";
+        std::cout << "-------------------------------------\n";
+        resetColor();
+    }
+
+    if (!hasUsers) {
+        setColor("red");
+        std::cout << "Nenhum usuário encontrado.\n";
+        resetColor();
+    }
+}
+
+bool removeUser(const std::string& userType, const std::string& email) {
+    std::string filePath;
+    if (userType == "student") filePath = "data/students.txt";
+    else if (userType == "teacher") filePath = "data/teachers.txt";
+    else {
+        setColor("red");
+        std::cerr << "Tipo de usuário inválido!\n";
+        resetColor();
+        return false;
+    }
+
+    std::ifstream inFile(filePath);
+    if (!inFile) {
+        setColor("red");
+        std::cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
+        resetColor();
+        return false;
+    }
+
+    std::ostringstream tempContent;
+    std::string line;
+    bool found = false;
+
+    while (getline(inFile, line)) {
+        std::istringstream ss(line);
+        std::string name, storedEmail;
+        getline(ss, name, ';');
+        getline(ss, storedEmail, ';');
+
+        if (storedEmail == email) {
+            found = true; // não copia esta linha
+        } else {
+            tempContent << line << "\n";
+        }
+    }
+    inFile.close();
+
+    if (found) {
+        std::ofstream outFile(filePath);
+        outFile << tempContent.str();
+        outFile.close();
+        setColor("green");
+        std::cout << "Usuário removido com sucesso!\n";
+        resetColor();
+    } else {
+        setColor("red");
+        std::cout << "Usuário com e-mail " << email << " não encontrado.\n";
+        resetColor();
+    }
+
+    return found;
+}
+
+bool updateUser(const std::string& userType, const std::string& currentEmail) {
+    std::string filePath;
+    if (userType == "student") filePath = "data/students.txt";
+    else if (userType == "teacher") filePath = "data/teachers.txt";
+    else {
+        setColor("red");
+        std::cerr << "Tipo de usuário inválido!\n";
+        resetColor();
+        return false;
+    }
+
+    std::ifstream inFile(filePath);
+    if (!inFile) {
+        setColor("red");
+        std::cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
+        resetColor();
+        return false;
+    }
+
+    std::ostringstream tempContent;
+    std::string line;
+    bool found = false;
+
+    while (getline(inFile, line)) {
+        std::istringstream ss(line);
+        std::string name, email, password, rest;
+
+        getline(ss, name, ';');
+        getline(ss, email, ';');
+        getline(ss, password, ';');
+        getline(ss, rest); // resto da linha
+
+        if (email == currentEmail) {
+            found = true;
+
+            std::string newName, newEmail, newPassword;
+            cout << "Novo nome (atual: " << name << "): ";
+            getline(cin, newName);
+            cout << "Novo email (atual: " << email << "): ";
+            getline(cin, newEmail);
+            cout << "Nova senha: ";
+            getline(cin, newPassword);
+
+            // reusa o hash!
+            std::string hashedPassword = hashPassword(newPassword);
+
+            tempContent << newName << ";" << newEmail << ";" << hashedPassword;
+            if (!rest.empty()) tempContent << ";" << rest;
+            tempContent << "\n";
+
+            setColor("green");
+            cout << "Usuário atualizado com sucesso!\n";
+            resetColor();
+        } else {
+            tempContent << line << "\n";
+        }
+    }
+    inFile.close();
+
+    if (found) {
+        std::ofstream outFile(filePath);
+        outFile << tempContent.str();
+        outFile.close();
+    } else {
+        setColor("red");
+        cout << "Usuário com e-mail " << currentEmail << " não encontrado.\n";
+        resetColor();
+    }
+
+    return found;
+}

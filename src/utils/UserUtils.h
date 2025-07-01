@@ -94,3 +94,33 @@ int registerUser(const std::string &userType);
  * -2 se senha incorreta ou tentativas excedidas.
  */
 int loginUser(const std::string& userType, User& userOut);
+
+
+/**
+ * @brief Lista usuários cadastrados no sistema, podendo ser alunos ou professores.
+ * 
+ * @param userType "student" ou "teacher"
+ */
+void listUsers(const std::string& userType);
+
+
+/**
+ * @brief Remove um usuário (student ou teacher) com base no e-mail.
+ * 
+ * @param userType "student" ou "teacher"
+ * @param email E-mail do usuário a ser removido
+ * @return true se removido com sucesso, false caso não encontrado
+ */
+bool removeUser(const std::string& userType, const std::string& email);
+
+
+/**
+ * @brief Atualiza nome, email ou senha de um usuário com base no email atual.
+ * 
+ * @param userType "student" ou "teacher"
+ * @param currentEmail Email atual para localizar o usuário
+ * @return true se atualizado, false caso usuário não encontrado
+ */
+bool updateUser(const std::string& userType, const std::string& currentEmail);
+
+

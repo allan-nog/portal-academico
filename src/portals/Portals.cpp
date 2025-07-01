@@ -277,30 +277,85 @@ void adminPortal(){
 
                         switch (adminLoggedOption) {
                             case 1:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
-                                resetColor();
+                                registerUser("student");
                                 break;
                             case 2:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
-                                resetColor();
+                                registerUser("teacher");
                                 break;
-                            case 3:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
+                            case 3: {
+                                setColor("blue");
+                                cout << "Você quer atualizar:\n";
+                                cout << "[1] - Aluno\n";
+                                cout << "[2] - Professor\n";
                                 resetColor();
+                                int updateOption = safeReadInt("Escolha uma opção: ");
+
+                                string email;
+                                if (updateOption == 1) {
+                                    cout << "Digite o e-mail atual do aluno: ";
+                                    getline(cin, email);
+                                    updateUser("student", email);
+                                } else if (updateOption == 2) {
+                                    cout << "Digite o e-mail atual do professor: ";
+                                    getline(cin, email);
+                                    updateUser("teacher", email);
+                                } else {
+                                    setColor("red");
+                                    cout << "Opção inválida.\n";
+                                    resetColor();
+                                }
                                 break;
-                            case 4:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
+                            }
+                            case 4: {
+                                setColor("blue");
+                                cout << "Você quer visualizar:\n";
                                 resetColor();
-                                break;
-                            case 5:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
+                                cout << "[1] - Alunos\n";
+                                cout << "[2] - Professores\n";
+                                setColor("blue");
+                                cout<< "---------------------\n";
                                 resetColor();
+                                int viewOption = safeReadInt("Escolha uma opção: ");
+                                clearConsole();
+
+                                if (viewOption == 1) {
+                                    listUsers("student");
+                                } else if (viewOption == 2) {
+                                    listUsers("teacher");
+                                } else {
+                                    setColor("red");
+                                    cout << "Opção inválida.\n";
+                                    resetColor();
+                                }
                                 break;
+                            }
+                            case 5: {
+                                setColor("blue");
+                                cout << "Você quer remover:\n";
+                                resetColor();
+                                cout << "[1] - Alunos\n";
+                                cout << "[2] - Professores\n";
+                                setColor("blue");
+                                cout<< "---------------------\n";
+                                resetColor();
+                                int removeOption = safeReadInt("Escolha uma opção: ");
+
+                                string email;
+                                if (removeOption == 1) {
+                                    cout << "\nDigite o e-mail do aluno a ser removido: ";
+                                    getline(cin, email);
+                                    removeUser("student", email);
+                                } else if (removeOption == 2) {
+                                    cout << "\nDigite o e-mail do professor a ser removido: ";
+                                    getline(cin, email);
+                                    removeUser("teacher", email);
+                                } else {
+                                    setColor("red");
+                                    cout << "Opção inválida.\n";
+                                    resetColor();
+                                }
+                                break;
+                            }
                             case 6:
                                 setColor("red");
                                 cout << "Funcionalidade ainda não implementada.\n";
