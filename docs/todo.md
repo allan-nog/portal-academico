@@ -24,12 +24,11 @@ Um checklist simplificado para acompanhar melhorias futuras e pendências técni
 ---
 
 ## 📝 Qualidade e organização do código
+- [x] Implementar `safeReadInt` para evitar que entradas inválidas quebrem o programa
 - [ ] Escrever testes unitários para `loadUser`, `loginUser` e `registerUser`
 - [ ] Melhorar encapsulamento nas classes `Student` e `Teacher`
 - [ ] Separar responsabilidades dos utilitários de console e validações
 - [ ] Adicionar comentários Doxygen em todas as funções públicas
-- [x] Implementar persistência com hash seguro (Argon2id via libsodium) para senhas
-- [x] Garantir criação automática dos arquivos caso não existam (`ensureFileExists`)
 
 ---
 
@@ -39,4 +38,4 @@ Um checklist simplificado para acompanhar melhorias futuras e pendências técni
 
 ---
 
-✅ **Versão atual:** protótipo funcional com cadastro e login (alunos, professores e administrador), hash seguro de senhas, persistência em arquivos `.txt` e menus completos no terminal.
+✅ **Versão atual:** protótipo funcional com cadastro e login para alunos e professores, persistência em arquivos `.txt` e menus no terminal protegidos contra entradas inválidas.

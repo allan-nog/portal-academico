@@ -69,27 +69,30 @@ inline void clearConsole() {
 
 
 /**
- * @brief Lê um número inteiro do console de forma segura.
- * Exibe o prompt, verifica se o input é um inteiro. Se não for, pede novamente.
- *
- * @param prompt Texto a exibir antes de ler.
- * @return Um inteiro válido digitado pelo usuário.
+ * @brief Lê um número inteiro do usuário de forma segura, com tratamento contra entrada inválida.
+ * 
+ * Mostra a mensagem na cor padrão, muda para verde para o input do usuário e reseta depois.
+ * 
+ * @param message Mensagem a ser exibida antes da leitura.
+ * @return O inteiro lido.
  */
-inline int safeReadInt(const std::string& prompt) {
+inline int safeReadInt(const std::string& message) {
     int value;
     while (true) {
+        std::cout << message;
         setColor("green");
-        std::cout << prompt;
-        resetColor();
         if (std::cin >> value) {
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            resetColor();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // limpa até o \n
             return value;
         } else {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            resetColor();
+            std::cin.clear(); // limpa flag de erro
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // descarta entrada inválida
             setColor("red");
-            std::cout << "Entrada inválida! Digite um número inteiro.\n";
+            std::cout << "Entrada inválida. Por favor, digite um número inteiro.\n";
             resetColor();
         }
     }
 }
+

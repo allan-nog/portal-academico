@@ -17,15 +17,12 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 - Criar testes unitários para as classes e utilitários
 - Melhorar modularidade e reaproveitamento de código (refatoração)
 - Documentar novas etapas conforme avanço do projeto
-- **Implementar validações rigorosas nos inputs do usuário para evitar quebras do programa**
-  - Exemplo: evitar entrada de strings em opções de menu numéricas
 
 ---
 
 ## 🚧 EM ANDAMENTO
 - Portal do administrador parcialmente implementado (login + menu, aguardando funcionalidades)
 - Estrutura de menus para o aluno e professor completa, mas algumas opções ainda pendentes
-- Implementação do hash de senhas com libsodium e persistência segura de usuários
 
 ---
 
@@ -37,7 +34,8 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 - Validações robustas na hora do cadastro de usuários
 - Sistema de login para alunos, professores e administrador, com controle de tentativas
 - Menus interativos implementados para aluno, professor e admin
-- Documentação das etapas anteriores (etapa1-analise.md, etapa2-fluxos.md, etapa3-initial-implementation.md, etapa4-classes.md, stage5-user-portal-implementations.md)
+- Implementação do `safeReadInt` para entradas seguras, protegendo menus contra inputs inválidos
+- Documentação das etapas anteriores (etapa1-analise.md, etapa2-fluxos.md, etapa3-initial-implementation.md, etapa4-classes.md, stage5-user-portal-implementations.md, stage6-uml-diagrams.md, stage7-hash-passwords.md, stage8-hash-persistencia-usuarios.md, stage9-safe-int-robust-menus.md)
 - Criação de TODO.md para rastrear funcionalidades detalhadas
 
 ---

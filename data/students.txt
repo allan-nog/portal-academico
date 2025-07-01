@@ -1,1 +1,3 @@
 Allan Pinto Nogueira;allan@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$B7wKcLdJAp/WVpCIQVKjcQ$rqQXjqo2m6Zd59cGYSuRa7Mi5JjIdbsJw3lZ4c3QEnM;12345;<desconhecido>;0
+Allan Pinto Nogueira;allan10@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$F9o5dk3zgD3hAUjOTd0k+w$wQbDMzyortxMUcjHMiXFKITlIinwR2jgg/aAJNc8vfM;12345;<desconhecido>;0
+allnap int;allan@aluno.inatel.br;$argon2id$v=19$m=262144,t=3,p=1$R6eSIchKjxw6z8ZbE+s/YA$5UbmzgLUguH2bKmQyURVSxO7Zx5c5QXBEyZtXxFvO68;12345;<desconhecido>;0
