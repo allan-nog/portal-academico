@@ -2,10 +2,12 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <limits>
 
 #ifdef _WIN32
     #include <windows.h> // Biblioteca específica do Windows para manipulação de console
 #endif
+
 
 /**
  * @brief Altera a cor do texto do console para a cor especificada.
@@ -42,12 +44,14 @@ inline void setColor(const std::string &colorName) {
     #endif
 }
 
+
 /**
  * @brief Reseta a cor do texto para o padrão do console.
  */
 inline void resetColor() {
     setColor("");
 }
+
 
 /**
  * @brief Limpa o console, independente do sistema operacional.
@@ -61,4 +65,31 @@ inline void clearConsole() {
     #else
         system("clear");
     #endif
+}
+
+
+/**
+ * @brief Lê um número inteiro do console de forma segura.
+ * Exibe o prompt, verifica se o input é um inteiro. Se não for, pede novamente.
+ *
+ * @param prompt Texto a exibir antes de ler.
+ * @return Um inteiro válido digitado pelo usuário.
+ */
+inline int safeReadInt(const std::string& prompt) {
+    int value;
+    while (true) {
+        setColor("green");
+        std::cout << prompt;
+        resetColor();
+        if (std::cin >> value) {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            return value;
+        } else {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            setColor("red");
+            std::cout << "Entrada inválida! Digite um número inteiro.\n";
+            resetColor();
+        }
+    }
 }
