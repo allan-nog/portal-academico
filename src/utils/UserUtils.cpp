@@ -388,28 +388,65 @@ bool updateUser(const std::string& userType, const std::string& currentEmail) {
         getline(ss, name, ';');
         getline(ss, email, ';');
         getline(ss, password, ';');
-        getline(ss, rest); // resto da linha
+        getline(ss, rest);
 
         if (email == currentEmail) {
             found = true;
-
             std::string newName, newEmail, newPassword;
-            cout << "Novo nome (atual: " << name << "): ";
-            getline(cin, newName);
-            cout << "Novo email (atual: " << email << "): ";
-            getline(cin, newEmail);
-            cout << "Nova senha: ";
-            getline(cin, newPassword);
 
-            // reusa o hash!
-            std::string hashedPassword = hashPassword(newPassword);
+            // Nome
+            do {
+                cout << "Novo nome (atual: " << name << ", ENTER para manter): ";
+                getline(cin, newName);
+                if (newName.empty()) newName = name;
+                if (!validateName(newName)) {
+                    setColor("red");
+                    cout << "Nome inválido. Tente novamente.\n";
+                    resetColor();
+                } else break;
+            } while (true);
 
-            tempContent << newName << ";" << newEmail << ";" << hashedPassword;
+            // Email
+            do {
+                cout << "Novo email (atual: " << email << ", ENTER para manter): ";
+                getline(cin, newEmail);
+                if (newEmail.empty()) newEmail = email;
+                if (!validateEmail(newEmail, userType)) {
+                    setColor("red");
+                    cout << "Email inválido.\n";
+                    resetColor();
+                } else if (newEmail != currentEmail && loadUser(newEmail, userType)) {
+                    setColor("red");
+                    cout << "Email já cadastrado para outro usuário.\n";
+                    resetColor();
+                } else break;
+            } while (true);
+
+            // Senha
+            do {
+                cout << "Nova senha (deixe vazio para manter a atual): ";
+                getline(cin, newPassword);
+                if (newPassword.empty()) {
+                    newPassword = password; // já está hash
+                    break;
+                }
+                if (!validatePassword(newPassword)) {
+                    setColor("red");
+                    cout << "Senha não atende aos requisitos.\n";
+                    resetColor();
+                } else {
+                    newPassword = hashPassword(newPassword);
+                    break;
+                }
+            } while (true);
+
+            // Reescreve a linha
+            tempContent << newName << ";" << newEmail << ";" << newPassword;
             if (!rest.empty()) tempContent << ";" << rest;
             tempContent << "\n";
 
             setColor("green");
-            cout << "Usuário atualizado com sucesso!\n";
+            cout << "✅ Usuário atualizado com sucesso!\n";
             resetColor();
         } else {
             tempContent << line << "\n";
@@ -419,13 +456,20 @@ bool updateUser(const std::string& userType, const std::string& currentEmail) {
 
     if (found) {
         std::ofstream outFile(filePath);
+        if (!outFile) {
+            setColor("red");
+            cout << "Erro ao salvar o arquivo atualizado.\n";
+            resetColor();
+            return false;
+        }
         outFile << tempContent.str();
         outFile.close();
     } else {
         setColor("red");
-        cout << "Usuário com e-mail " << currentEmail << " não encontrado.\n";
+        cout << "Usuário não encontrado.\n";
         resetColor();
     }
 
     return found;
 }
+

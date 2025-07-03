@@ -1,2 +1,3 @@
 allan;allan@elite.br;allan123;0
 Gustavo Pinto Junqueira;gustavo@elite.br;$argon2id$v=19$m=262144,t=3,p=1$gAEe0JCiJ9aPtNTr6Cm8zQ$nY/K71OJy1HmbgRlVKyLzN9zS13vflT+nPuDAmchTpU;0
+Maria Eduarda Magalhães;maria@elite.br;$argon2id$v=19$m=262144,t=3,p=1$O3HKR0eL3dQIjJTfY969rA$BIv+hdKcj54e4sUSjr5tLR8SMYQwxTscSL+O6u6ZOLQ;0

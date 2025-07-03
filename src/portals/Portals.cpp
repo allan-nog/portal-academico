@@ -39,7 +39,7 @@ void studentPortal(){
                         cout << "\n----------- MENU DO ALUNO -----------\n";
                         resetColor();
                         cout << "[1] - Visualizar perfil\n";
-                        cout << "[2] - Atualizar dados (futuro)\n";
+                        cout << "[2] - Atualizar dados\n";
                         cout << "[3] - Visualizar notas\n";
                         cout << "[4] - Visualizar frequência\n";
                         cout << "[5] - Registrar requerimento\n";
@@ -66,11 +66,13 @@ void studentPortal(){
                                 cout << "Senha: [oculta]\n"; // apenas para testes
                                 resetColor();
                                 break;
-                            case 2:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
+                            case 2: {
+                                setColor("yellow");
+                                cout << "\nAtualizando dados para o usuário: " << user.getEmail() << endl;
                                 resetColor();
+                                updateUser("student", user.getEmail());
                                 break;
+                            }
                             case 3:
                                 setColor("red");
                                 cout << "Funcionalidade ainda não implementada.\n";
@@ -135,7 +137,7 @@ void teacherPortal(){
                         cout << "\n--------- MENU DO PROFESSOR ---------\n";
                         resetColor();
                         cout << "[1] - Visualizar perfil\n";
-                        cout << "[2] - Atualizar dados (futuro)\n";
+                        cout << "[2] - Atualizar dados\n";
                         cout << "[3] - Registrar notas\n";
                         cout << "[4] - Registrar frequência\n";
                         cout << "[0] - Logout\n";
@@ -161,11 +163,13 @@ void teacherPortal(){
                                 cout << "Senha: " << user.getPassword() << "\n"; // apenas para testes
                                 resetColor();
                                 break;
-                            case 2:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
+                            case 2: {
+                                setColor("yellow");
+                                cout << "\nAtualizando dados para o usuário: " << user.getEmail() << endl;
                                 resetColor();
+                                updateUser("teacher", user.getEmail());
                                 break;
+                            }
                             case 3:
                                 setColor("red");
                                 cout << "Funcionalidade ainda não implementada.\n";
@@ -257,7 +261,7 @@ void adminPortal(){
                         resetColor();
                         cout << "[1] - Cadastrar aluno\n";
                         cout << "[2] - Cadastrar professor\n";
-                        cout << "[3] - Atualizar dados (futuro)\n";
+                        cout << "[3] - Atualizar dados\n";
                         cout << "[4] - Visualizar usuários\n";
                         cout << "[5] - Remover usuário\n";
                         cout << "[6] - Visualizar requerimentos\n";
@@ -285,18 +289,21 @@ void adminPortal(){
                             case 3: {
                                 setColor("blue");
                                 cout << "Você quer atualizar:\n";
-                                cout << "[1] - Aluno\n";
-                                cout << "[2] - Professor\n";
+                                resetColor();
+                                cout << "[1] - Alunos\n";
+                                cout << "[2] - Professores\n";
+                                setColor("blue");
+                                cout<< "---------------------\n";
                                 resetColor();
                                 int updateOption = safeReadInt("Escolha uma opção: ");
 
                                 string email;
                                 if (updateOption == 1) {
-                                    cout << "Digite o e-mail atual do aluno: ";
+                                    cout << "\nDigite o e-mail atual do aluno: ";
                                     getline(cin, email);
                                     updateUser("student", email);
                                 } else if (updateOption == 2) {
-                                    cout << "Digite o e-mail atual do professor: ";
+                                    cout << "\nDigite o e-mail atual do professor: ";
                                     getline(cin, email);
                                     updateUser("teacher", email);
                                 } else {
