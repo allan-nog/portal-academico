@@ -84,9 +84,7 @@ void studentPortal(){
                                 resetColor();
                                 break;
                             case 5:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
-                                resetColor();
+                                createRequest(user.getEmail());
                                 break;
                             default:
                                 setColor("red");
@@ -364,9 +362,7 @@ void adminPortal(){
                                 break;
                             }
                             case 6:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
-                                resetColor();
+                                listRequests();
                                 break;
                             default:
                                 setColor("red");

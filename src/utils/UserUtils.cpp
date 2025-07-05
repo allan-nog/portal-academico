@@ -38,13 +38,13 @@ bool verifyPassword(const string& password, const string& hashedPassword) {
 }
 
 // Função para garantir que o arquivo sempre exista
-void ensureFileExists(const std::string& path) {
-    std::ifstream file(path);
+void ensureFileExists(const string& path) {
+    ifstream file(path);
     if (!file) {
         // Não existe, vamos criar
-        std::ofstream createFile(path);
+        ofstream createFile(path);
         if (!createFile) {
-            std::cerr << "Não foi possível criar o arquivo " << path << std::endl;
+            cerr << "Não foi possível criar o arquivo " << path << endl;
         } else {
             createFile.close();
         }
@@ -260,82 +260,101 @@ int loginUser(const string& userType, User& userOut) {
 
 }
 
-void listUsers(const std::string& userType) {
-    std::string filePath;
+void listUsers(const string& userType) {
+    string filePath;
     if (userType == "student") filePath = "data/students.txt";
     else if (userType == "teacher") filePath = "data/teachers.txt";
     else {
         setColor("red");
-        std::cerr << "Tipo de usuário inválido!\n";
+        cerr << "Tipo de usuário inválido!\n";
         resetColor();
         return;
     }
 
-    std::ifstream inFile(filePath);
+    ifstream inFile(filePath);
     if (!inFile) {
         setColor("red");
-        std::cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
+        cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
         resetColor();
         return;
     }
 
-    std::string line;
+    string line;
     bool hasUsers = false;
     while (getline(inFile, line)) {
         hasUsers = true;
-        std::istringstream ss(line);
-        std::string name, email, password;
+        istringstream ss(line);
+        string name, email, password;
 
         getline(ss, name, ';');
         getline(ss, email, ';');
         getline(ss, password, ';');
 
         setColor("yellow");
-        std::cout << "Nome: " << name << "\n";
-        std::cout << "Email: " << email << "\n";
-        std::cout << "Senha: " << password << " (hash ou texto)\n";
-        std::cout << "-------------------------------------\n";
+        cout << "Nome: " << name << "\n";
+        cout << "Email: " << email << "\n";
+        cout << "Senha: " << password << " (hash ou texto)\n";
+        cout << "-------------------------------------\n";
         resetColor();
     }
 
     if (!hasUsers) {
         setColor("red");
-        std::cout << "Nenhum usuário encontrado.\n";
+        cout << "Nenhum usuário encontrado.\n";
         resetColor();
     }
 }
 
-bool removeUser(const std::string& userType, const std::string& email) {
-    std::string filePath;
+bool removeUser(const string& userType, const string& email) {
+    string filePath;
     if (userType == "student") filePath = "data/students.txt";
     else if (userType == "teacher") filePath = "data/teachers.txt";
     else {
         setColor("red");
-        std::cerr << "Tipo de usuário inválido!\n";
+        cerr << "Tipo de usuário inválido!\n";
         resetColor();
         return false;
     }
 
-    std::ifstream inFile(filePath);
+    ifstream inFile(filePath);
     if (!inFile) {
         setColor("red");
-        std::cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
+        cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
         resetColor();
         return false;
     }
 
-    std::ostringstream tempContent;
-    std::string line;
+    ostringstream tempContent;
+    string line;
     bool found = false;
 
     while (getline(inFile, line)) {
-        std::istringstream ss(line);
-        std::string name, storedEmail;
+        istringstream ss(line);
+        string name, storedEmail;
         getline(ss, name, ';');
         getline(ss, storedEmail, ';');
 
         if (storedEmail == email) {
-            found = true; // não copia esta linha
+            found = true;
+            setColor("yellow");
+            cout << "\nUsuário encontrado: " << name << " <" << storedEmail << ">\n";
+            resetColor();
+
+            string confirm;
+            cout << "Tem certeza que deseja remover? (s/n): ";
+            getline(cin, confirm);
+
+            if (confirm != "s" && confirm != "S") {
+                setColor("red");
+                cout << "Operação cancelada pelo usuário.\n";
+                resetColor();
+                tempContent << line << "\n"; // mantém o usuário
+            } else {
+                setColor("green");
+                cout << "Usuário removido com sucesso.\n";
+                resetColor();
+                // não adiciona ao tempContent, efetivamente removendo
+            }
         } else {
             tempContent << line << "\n";
         }
@@ -343,47 +362,44 @@ bool removeUser(const std::string& userType, const std::string& email) {
     inFile.close();
 
     if (found) {
-        std::ofstream outFile(filePath);
+        ofstream outFile(filePath);
         outFile << tempContent.str();
         outFile.close();
-        setColor("green");
-        std::cout << "Usuário removido com sucesso!\n";
-        resetColor();
     } else {
         setColor("red");
-        std::cout << "Usuário com e-mail " << email << " não encontrado.\n";
+        cout << "Usuário com e-mail " << email << " não encontrado.\n";
         resetColor();
     }
 
     return found;
 }
 
-bool updateUser(const std::string& userType, const std::string& currentEmail) {
-    std::string filePath;
+bool updateUser(const string& userType, const string& currentEmail) {
+    string filePath;
     if (userType == "student") filePath = "data/students.txt";
     else if (userType == "teacher") filePath = "data/teachers.txt";
     else {
         setColor("red");
-        std::cerr << "Tipo de usuário inválido!\n";
+        cerr << "Tipo de usuário inválido!\n";
         resetColor();
         return false;
     }
 
-    std::ifstream inFile(filePath);
+    ifstream inFile(filePath);
     if (!inFile) {
         setColor("red");
-        std::cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
+        cerr << "Erro ao abrir o arquivo: " << filePath << "\n";
         resetColor();
         return false;
     }
 
-    std::ostringstream tempContent;
-    std::string line;
+    ostringstream tempContent;
+    string line;
     bool found = false;
 
     while (getline(inFile, line)) {
-        std::istringstream ss(line);
-        std::string name, email, password, rest;
+        istringstream ss(line);
+        string name, email, password, rest;
 
         getline(ss, name, ';');
         getline(ss, email, ';');
@@ -392,7 +408,7 @@ bool updateUser(const std::string& userType, const std::string& currentEmail) {
 
         if (email == currentEmail) {
             found = true;
-            std::string newName, newEmail, newPassword;
+            string newName, newEmail, newPassword;
 
             // Nome
             do {
@@ -455,7 +471,7 @@ bool updateUser(const std::string& userType, const std::string& currentEmail) {
     inFile.close();
 
     if (found) {
-        std::ofstream outFile(filePath);
+        ofstream outFile(filePath);
         if (!outFile) {
             setColor("red");
             cout << "Erro ao salvar o arquivo atualizado.\n";
@@ -471,5 +487,70 @@ bool updateUser(const std::string& userType, const std::string& currentEmail) {
     }
 
     return found;
+}
+
+void createRequest(const string& studentEmail) {
+    string message;
+    setColor("blue");
+    cout << "\n------ NOVO REQUERIMENTO ------\n";
+    resetColor();
+    cout << "Digite seu requerimento: ";
+    getline(cin, message);
+
+    // Pega timestamp
+    time_t now = time(nullptr);
+    char buf[80];
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&now));
+
+    // Garante arquivo existe
+    ofstream file("data/requests.txt", ios::app);
+    if (!file) {
+        setColor("red");
+        cerr << "Erro ao abrir o arquivo data/requests.txt\n";
+        resetColor();
+        return;
+    }
+
+    file << studentEmail << ";" << message << ";" << buf << "\n";
+    file.close();
+
+    setColor("green");
+    cout << "Requerimento registrado com sucesso!\n";
+    resetColor();
+}
+
+void listRequests() {
+    std::ifstream file("data/requests.txt");
+    if (!file) {
+        setColor("red");
+        std::cerr << "Nenhum requerimento encontrado ou erro ao abrir o arquivo.\n";
+        resetColor();
+        return;
+    }
+
+    std::string line;
+    bool hasRequests = false;
+    while (getline(file, line)) {
+        hasRequests = true;
+        std::istringstream ss(line);
+        std::string email, message, timestamp;
+
+        getline(ss, email, ';');
+        getline(ss, message, ';');
+        getline(ss, timestamp, ';');
+
+        setColor("yellow");
+        std::cout << "Email: " << email << "\n";
+        std::cout << "Requerimento: " << message << "\n";
+        std::cout << "Data/Hora: " << timestamp << "\n";
+        std::cout << "------------------------------------\n";
+        resetColor();
+    }
+
+    if (!hasRequests) {
+        setColor("red");
+        std::cout << "Nenhum requerimento registrado ainda.\n";
+        resetColor();
+    }
 }
 

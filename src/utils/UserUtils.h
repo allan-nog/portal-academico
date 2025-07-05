@@ -124,3 +124,17 @@ bool removeUser(const std::string& userType, const std::string& email);
 bool updateUser(const std::string& userType, const std::string& currentEmail);
 
 
+/**
+ * @brief Permite que um aluno registre um requerimento, que será salvo em arquivo.
+ * 
+ * @param studentEmail Email do aluno autenticado.
+ */
+void createRequest(const std::string& studentEmail);
+
+
+/**
+ * @brief Exibe todos os requerimentos registrados pelos alunos.
+ */
+void listRequests();
+
+

@@ -6,14 +6,10 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 
 ## 📌 A FAZER
 - Implementar funcionalidades do administrador:
-  - Cadastro direto de aluno e professor
-  - Visualizar usuários cadastrados
-  - Remover usuários
-  - Visualizar requerimentos
-- Implementar sistema de requerimentos (aluno solicita, admin visualiza)
+  - Visualizar requerimentos (resposta / aceite / recusa futuramente)
 - Criar funcionalidades para o professor lançar notas e frequência
 - Criar funcionalidades para o aluno visualizar notas e frequência
-- Implementar atualização de dados de perfil (aluno e professor)
+- Implementar atualização avançada de dados de perfil (mais campos, senha opcional)
 - Criar testes unitários para as classes e utilitários
 - Melhorar modularidade e reaproveitamento de código (refatoração)
 - Documentar novas etapas conforme avanço do projeto
@@ -21,8 +17,8 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 ---
 
 ## 🚧 EM ANDAMENTO
-- Portal do administrador parcialmente implementado (login + menu, aguardando funcionalidades)
-- Estrutura de menus para o aluno e professor completa, mas algumas opções ainda pendentes
+- Pensando em melhorias futuras para o sistema de requerimentos (aceitar / recusar)
+- Preparação para implementação das funcionalidades do professor e do aluno com dados acadêmicos
 
 ---
 
@@ -34,13 +30,17 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 - Validações robustas na hora do cadastro de usuários
 - Sistema de login para alunos, professores e administrador, com controle de tentativas
 - Menus interativos implementados para aluno, professor e admin
-- Implementação do `safeReadInt` para entradas seguras, protegendo menus contra inputs inválidos
-- Documentação das etapas anteriores (etapa1-analise.md, etapa2-fluxos.md, etapa3-initial-implementation.md, etapa4-classes.md, stage5-user-portal-implementations.md, stage6-uml-diagrams.md, stage7-hash-passwords.md, stage8-hash-persistencia-usuarios.md, stage9-safe-int-robust-menus.md)
-- Criação de TODO.md para rastrear funcionalidades detalhadas
+- Modularização completa dos portais (arquivos separados por função)
+- Funcionalidade de atualizar dados de perfil para alunos e professores
+- Funcionalidade de remover usuários no portal do admin
+- Sistema de requerimentos (aluno registra, admin visualiza)
+- Documentação das etapas (etapa1-analise.md, etapa2-fluxos.md, etapa3-initial-implementation.md, etapa4-classes.md, stage5-user-portal-implementations.md, stage10-portal-atualizar-remover.md, stage11-requerimentos.md)
+- Criação e atualização do TODO.md para rastrear funcionalidades detalhadas
 
 ---
 
 ## 📝 Observações
-- Dados atualmente armazenados em arquivos .txt (pasta /data), com possibilidade de migração futura para banco de dados
-- O kanban deve ser atualizado conforme progresso, para manter a visão geral do projeto
-- Priorização em manter código limpo, modular e documentado para facilitar manutenção e expansão futura
+- Dados atualmente armazenados em arquivos .txt (pasta /data), com possibilidade de migração futura para banco de dados.
+- O kanban deve ser atualizado sempre que avançarmos, para manter a visão geral do projeto.
+
+---

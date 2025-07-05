@@ -1,5 +1,4 @@
 Allan Nogueira Pinto;allan@aluno.elite;$argon2id$v=19$m=262144,t=3,p=1$eWjzz0n6un89/QqkYOVD0g$hFXJfL/C0/5KYVCh+CfsKjrnaexpxgijblv4GUjAi98;12345;<desconhecido>;0
 allnap int;allan@aluno.inatel.br;$argon2id$v=19$m=262144,t=3,p=1$R6eSIchKjxw6z8ZbE+s/YA$5UbmzgLUguH2bKmQyURVSxO7Zx5c5QXBEyZtXxFvO68;12345;<desconhecido>;0
 Gustavo Pinto Nogueira;gustavo@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$33Zupl+WbvxoIQRwhiAVuw$eVulkedh3+VUANaEH0Ji6QIHFdKClC1I/fMA1QM9164;12345;<desconhecido>;0
-Allan Pinto Nogueira de faria lima;allan25@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$lgE9mtasJn0aoxuPSZ8ZzQ$mHEP2uLmHLo/cbUZzFCGy/zDfsY1GXGhVpnDEQcQyxA;12345;<desconhecido>;0
-Allan Pinto Nogueira;allan@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$5kRyFaFoqedOym5i56jA6g$RZI+zohv/e9nuj1IwfFhscOISctic1YTvyGYmasmEXA;12345;<desconhecido>;0
+Allan Pinto Nogueira;allan@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$irb0t/YtfNrnJp1qaUBLmw$pbjlILaJobt5TWg3rNqx5tv2gxAk3SMkP2cBuLpU58U;12345;<desconhecido>;0

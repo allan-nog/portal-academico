@@ -7,35 +7,35 @@ Um checklist simplificado para acompanhar melhorias futuras e pendências técni
 ## 🔥 Funcionalidades futuras
 - [ ] Implementar bloqueio de login temporário (ex: 3 minutos após 5 tentativas falhadas)
 - [ ] Criar logs de auditoria de login (sucesso / falha / IP ou terminal)
-- [x] Implementar cadastro e login para o Administrador
-- [ ] Permitir alteração de senha pelo usuário
+- [ ] Permitir alteração de senha pelo usuário sem trocar outros dados
 - [ ] Adicionar recuperação de senha (via pergunta secreta ou token)
 - [ ] Implementar sistema de permissões (restrições por tipo de usuário)
+- [ ] Aceitar ou recusar requerimentos pelo admin
+- [ ] Criar menu de ajuda com instruções rápidas do sistema
 
 ---
 
 ## 🚀 Melhorias no sistema
-- [ ] Usar `chrono` ou `std::time` para controlar cooldowns e timestamps
-- [ ] Refatorar funções duplicadas (como `saveStudent` / `saveTeacher`) para um utilitário genérico
-- [ ] Melhorar as mensagens de erro e sucesso com ícones ou emojis no console
-- [ ] Criar um menu de ajuda com instruções rápidas do sistema
+- [x] Refatorar funções duplicadas (`saveStudent` / `saveTeacher`) para melhor consistência (já parcialmente modularizado)
+- [x] Usar `safeReadInt` para proteger entradas e evitar crash do programa
+- [ ] Usar `chrono` ou `std::time` para controlar cooldowns e timestamps futuros
 - [ ] Fazer logging interno (em arquivos `.log`) para depuração
+- [ ] Melhorar as mensagens de erro e sucesso com ícones ou emojis no console
 
 ---
 
 ## 📝 Qualidade e organização do código
-- [x] Implementar `safeReadInt` para evitar que entradas inválidas quebrem o programa
-- [ ] Escrever testes unitários para `loadUser`, `loginUser` e `registerUser`
+- [ ] Escrever testes unitários para `loadUser`, `loginUser`, `registerUser` e agora `updateUser`, `removeUser`, `createRequest`
 - [ ] Melhorar encapsulamento nas classes `Student` e `Teacher`
-- [ ] Separar responsabilidades dos utilitários de console e validações
-- [ ] Adicionar comentários Doxygen em todas as funções públicas
+- [ ] Adicionar comentários Doxygen em todas as funções públicas e novos utilitários
+- [ ] Documentar futuras regras de negócio (requerimentos, notas, frequência)
 
 ---
 
 ## 💡 Observações
-- Estas tarefas não são prioritárias para o MVP, mas garantirão um sistema mais robusto e pronto para evoluir.
-- Atualizar este arquivo conforme forem surgindo novas ideias ou funcionalidades implementadas.
+- Estas tarefas não são críticas para o MVP atual, mas garantirão um sistema mais robusto, pronto para deploy ou expansão futura.
+- Atualizar este arquivo conforme novas funcionalidades forem implementadas ou novas ideias surgirem.
 
 ---
 
-✅ **Versão atual:** protótipo funcional com cadastro e login para alunos e professores, persistência em arquivos `.txt` e menus no terminal protegidos contra entradas inválidas.
+✅ **Versão atual:** protótipo funcional com cadastro, login, atualização, remoção e sistema de requerimentos.
