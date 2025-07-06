@@ -138,3 +138,19 @@ void createRequest(const std::string& studentEmail);
 void listRequests();
 
 
+/**
+ * @brief Registra nota e frequência para um aluno em uma disciplina,
+ * atribuindo status Aprovado, Recuperação ou Reprovado.
+ */
+void registerGradeAndAttendance();
+
+
+/**
+ * @brief Exibe todas as disciplinas, notas, frequência e status do aluno autenticado.
+ * 
+ * @param studentEmail Email do aluno logado.
+ */
+void viewGradesAndAttendance(const std::string& studentEmail);
+
+
+

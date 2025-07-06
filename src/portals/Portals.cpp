@@ -74,9 +74,7 @@ void studentPortal(){
                                 break;
                             }
                             case 3:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
-                                resetColor();
+                                viewGradesAndAttendance(user.getEmail());
                                 break;
                             case 4:
                                 setColor("red");
@@ -169,9 +167,7 @@ void teacherPortal(){
                                 break;
                             }
                             case 3:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
-                                resetColor();
+                                registerGradeAndAttendance();
                                 break;
                             case 4:
                                 setColor("red");
