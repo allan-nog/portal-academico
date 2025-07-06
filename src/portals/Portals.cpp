@@ -88,7 +88,7 @@ void studentPortal(){
                                 break;
                             default:
                                 setColor("red");
-                                cout << "\nOpcao invalida.\n";
+                                cout << "Opção inválida.\n";
                                 resetColor();
                                 break;
                         }
@@ -98,7 +98,7 @@ void studentPortal(){
             }
             default:
                 setColor("red");
-                cout << "\nOpcao invalida.\n";
+                cout << "Opção inválida.\n";
                 resetColor();
                 break;
         }
@@ -158,7 +158,7 @@ void teacherPortal(){
                                 cout << "---------- SEU PERFIL ----------\n";
                                 cout << "Nome: " << user.getName() << "\n";
                                 cout << "Email: " << user.getEmail() << "\n";
-                                cout << "Senha: " << user.getPassword() << "\n"; // apenas para testes
+                                cout << "Senha: [oculta]\n"; 
                                 resetColor();
                                 break;
                             case 2: {
@@ -180,7 +180,7 @@ void teacherPortal(){
                                 break;
                             default:
                                 setColor("red");
-                                cout << "\nOpcao invalida.\n";
+                                cout << "Opção inválida.\n";
                                 resetColor();
                                 break;
                         }
@@ -190,7 +190,7 @@ void teacherPortal(){
             }
             default:
                 setColor("red");
-                cout << "\nOpcao invalida.\n";
+                cout << "Opção inválida.\n";
                 resetColor();
                 break;
         }
@@ -366,7 +366,7 @@ void adminPortal(){
                                 break;
                             default:
                                 setColor("red");
-                                cout << "\nOpcao invalida.\n";
+                                cout << "Opção inválida.\n";
                                 resetColor();
                                 break;
                         }
@@ -376,7 +376,7 @@ void adminPortal(){
             }
             default:
                 setColor("red");
-                cout << "\nOpcao invalida.\n";
+                cout << "Opção inválida.\n";
                 resetColor();
                 break;
         }

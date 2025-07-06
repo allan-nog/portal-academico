@@ -1,7 +1,8 @@
 #include "Teacher.h"
 #include <iostream>
+using namespace std;
 
-Teacher::Teacher(const std::string &name, const std::string &email, const std::string &password, int siape) 
+Teacher::Teacher(const string &name, const string &email, const string &password, int siape) 
     : User(name, email, password), siape(siape) {}
 
 int Teacher::getSiape() const noexcept { return siape; }
@@ -12,14 +13,14 @@ void Teacher::addCourse(const Course &course) {
 }
 
 void Teacher::printInfo() const {
-    std::cout << "-----------------------------------\n";
-    std::cout << "Teacher: " << getName() << "\n";
-    std::cout << "Email: " << getEmail() << "\n";
-    std::cout << "SIAPE: " << siape << "\n";
+    cout << "-----------------------------------\n";
+    cout << "Teacher: " << getName() << "\n";
+    cout << "Email: " << getEmail() << "\n";
+    cout << "SIAPE: " << siape << "\n";
 
-    std::cout << "Teaching courses:\n";
+    cout << "Teaching courses:\n";
     for (const auto &c : teachingCourses) {
-        std::cout << " - " << c.name << " (" << c.hours << "h)\n";
+        cout << " - " << c.name << " (" << c.hours << "h)\n";
     }
-    std::cout << "-----------------------------------\n";
+    cout << "-----------------------------------\n";
 }

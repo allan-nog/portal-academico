@@ -5,9 +5,8 @@
 #include <limits>
 
 #ifdef _WIN32
-    #include <windows.h> // Biblioteca específica do Windows para manipulação de console
+    #include <windows.h> // Para manipulação de console no Windows
 #endif
-
 
 /**
  * @brief Altera a cor do texto do console para a cor especificada.
@@ -16,10 +15,13 @@
  * - "vermelho" ou "red"
  * - "verde" ou "green"
  * - "azul" ou "blue"
+ * - "amarelo" ou "yellow"
+ * - "ciano" ou "cyan"
+ * - "magenta" ou "purple"
  *
- * Qualquer outro valor reseta a cor para o padrão do console.
+ * Qualquer outro valor reseta para o padrão.
  *
- * @param colorName Nome da cor, em português ou inglês.
+ * @param colorName Nome da cor.
  */
 inline void setColor(const std::string &colorName) {
     std::string color = colorName;
@@ -44,7 +46,6 @@ inline void setColor(const std::string &colorName) {
     #endif
 }
 
-
 /**
  * @brief Reseta a cor do texto para o padrão do console.
  */
@@ -52,11 +53,8 @@ inline void resetColor() {
     setColor("");
 }
 
-
 /**
- * @brief Limpa o console, independente do sistema operacional.
- *
- * Usa "cls" no Windows e "clear" no Linux/macOS.
+ * @brief Limpa o console, independente do SO.
  */
 inline void clearConsole() {
     std::cout << std::flush;
@@ -67,11 +65,11 @@ inline void clearConsole() {
     #endif
 }
 
-
 /**
- * @brief Lê um número inteiro do usuário de forma segura, com tratamento contra entrada inválida.
+ * @brief Lê um número inteiro do usuário de forma segura, com cores e tratamento.
  * 
- * Mostra a mensagem na cor padrão, muda para verde para o input do usuário e reseta depois.
+ * Mostra a mensagem na cor padrão, muda para verde para o input,
+ * reseta depois, e faz flush do buffer.
  * 
  * @param message Mensagem a ser exibida antes da leitura.
  * @return O inteiro lido.
@@ -83,16 +81,15 @@ inline int safeReadInt(const std::string& message) {
         setColor("green");
         if (std::cin >> value) {
             resetColor();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // limpa até o \n
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             return value;
         } else {
             resetColor();
-            std::cin.clear(); // limpa flag de erro
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // descarta entrada inválida
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             setColor("red");
             std::cout << "Entrada inválida. Por favor, digite um número inteiro.\n";
             resetColor();
         }
     }
 }
-

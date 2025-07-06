@@ -4,6 +4,7 @@
 #include "../core/User.h"
 #include "../core/Student.h"
 #include "../core/Teacher.h"
+#include "../core/Request.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -497,12 +498,10 @@ void createRequest(const string& studentEmail) {
     cout << "Digite seu requerimento: ";
     getline(cin, message);
 
-    // Pega timestamp
     time_t now = time(nullptr);
     char buf[80];
     strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&now));
 
-    // Garante arquivo existe
     ofstream file("data/requests.txt", ios::app);
     if (!file) {
         setColor("red");
@@ -520,37 +519,33 @@ void createRequest(const string& studentEmail) {
 }
 
 void listRequests() {
-    std::ifstream file("data/requests.txt");
-    if (!file) {
+    ifstream inFile("data/requests.txt");
+    if (!inFile) {
         setColor("red");
-        std::cerr << "Nenhum requerimento encontrado ou erro ao abrir o arquivo.\n";
+        cerr << "Erro ao abrir o arquivo data/requests.txt\n";
         resetColor();
         return;
     }
 
-    std::string line;
-    bool hasRequests = false;
-    while (getline(file, line)) {
-        hasRequests = true;
-        std::istringstream ss(line);
-        std::string email, message, timestamp;
-
+    string line;
+    bool found = false;
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string email, desc, date;
         getline(ss, email, ';');
-        getline(ss, message, ';');
-        getline(ss, timestamp, ';');
+        getline(ss, desc, ';');
+        getline(ss, date);
 
-        setColor("yellow");
-        std::cout << "Email: " << email << "\n";
-        std::cout << "Requerimento: " << message << "\n";
-        std::cout << "Data/Hora: " << timestamp << "\n";
-        std::cout << "------------------------------------\n";
-        resetColor();
+        Request req(email, desc, date);
+        req.print();
+        found = true;
     }
 
-    if (!hasRequests) {
+    if (!found) {
         setColor("red");
-        std::cout << "Nenhum requerimento registrado ainda.\n";
+        cout << "Nenhum requerimento encontrado.\n";
         resetColor();
     }
 }
+
 
