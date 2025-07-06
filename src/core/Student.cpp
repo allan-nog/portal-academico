@@ -2,13 +2,13 @@
 #include <iostream>
 using namespace std;
 
-Student::Student(const string &name, const string &email, const string &password, int registration, const string &course, int period) : User(name, email, password), registration(registration), course(course), period(period) {}
+Student::Student(const string &name, const string &email, const string &password, string registration, const string &course, int period) : User(name, email, password), registration(registration), course(course), period(period) {}
 
-int Student::getRegistration() const noexcept { return registration; }
+string Student::getRegistration() const noexcept { return registration; }
 const string& Student::getCourse() const noexcept { return course; }
 int Student::getPeriod() const noexcept { return period; }
 
-void Student::setRegistration(int newRegistration) noexcept { registration = newRegistration; }
+void Student::setRegistration(string newRegistration) noexcept { registration = newRegistration; }
 void Student::setCourse(const string &newCourse) noexcept { course = newCourse; }
 void Student::setPeriod(int newPeriod) noexcept { period = newPeriod; }
 

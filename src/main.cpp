@@ -4,6 +4,7 @@
 using namespace std;
 
 int main(){
+    srand(static_cast<unsigned int>(time(nullptr)));
     int option;
     while (true){
         setColor("blue");

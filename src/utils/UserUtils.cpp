@@ -1,6 +1,7 @@
 #include "UserUtils.h"
 #include "ConsoleUtils.h"
 #include "Validador.h"
+#include "IdUtils.h"
 #include "../core/User.h"
 #include "../core/Student.h"
 #include "../core/Teacher.h"
@@ -138,19 +139,11 @@ bool loadUser(const string& email, const string& userType, User* userOut) {
 
 // Função principal para registro de usuário
 int registerUser(const string &userType) {
-
-    // Garante o arquivo
-    if (userType == "student") {
-        ensureFileExists("data/students.txt");
-    } else if (userType == "teacher") {
-        ensureFileExists("data/teachers.txt");
-    }
-
     string name, email, passwordEntered, confirmationPasswordEntered;
     bool nameIsValid = false, emailIsValid = false, passwordIsValid = false;
 
     setColor("blue");
-    cout << "\n-------------- CADASTRO NO SISTEMA --------------\n";
+    cout << "\n------------- CADASTRO NO SISTEMA -------------\n";
     resetColor();
 
     // Nome
@@ -167,7 +160,7 @@ int registerUser(const string &userType) {
 
     // Email
     while (!emailIsValid) {
-        cout << "Digite o e-mail: ";
+        cout << "E-mail: ";
         getline(cin, email);
 
         if (!validateEmail(email, userType)) {
@@ -183,7 +176,7 @@ int registerUser(const string &userType) {
 
     // Senha
     while (!passwordIsValid) {
-        cout << "Digite a senha: ";
+        cout << "Senha: ";
         getline(cin, passwordEntered);
         if (!validatePassword(passwordEntered)) {
             setColor("red");
@@ -200,15 +193,23 @@ int registerUser(const string &userType) {
             resetColor();
         } else passwordIsValid = true;
     }
-    
-    string hashedPassword = hashPassword(passwordEntered);
 
     // Salva no arquivo adequado
     if (userType == "student") {
-        Student student(name, email, hashedPassword, 12345, "<desconhecido>", 0);
+        string course;
+        cout << "Digite o curso: ";
+        getline(cin, course);
+
+        int period = safeReadInt("Digite o período atual: ");
+
+        string registration = generateStudentRegistration(1); // código fixo do curso = 1
+
+        Student student(name, email, hashPassword(passwordEntered), registration, course, period);
         saveStudent(student);
+
     } else if (userType == "teacher") {
-        Teacher teacher(name, email, hashedPassword, 0);
+        string siape = generateTeacherSiape();
+        Teacher teacher(name, email, hashPassword(passwordEntered), siape);
         saveTeacher(teacher);
     }
 

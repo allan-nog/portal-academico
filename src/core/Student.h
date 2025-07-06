@@ -10,7 +10,7 @@
  */
 class Student : public User {
 private:
-    int registration; ///< Número de matrícula do aluno
+    std::string registration; ///< Número de matrícula do aluno
     std::string course; ///< Curso que o aluno está matriculado
     int period; ///< Período atual (ex: 1, 2, 3...)
     std::vector<Course> enrolledCourses; ///< Lista de disciplinas em que o aluno está matriculado
@@ -24,13 +24,13 @@ public:
      * @param course Curso que o aluno está matriculado
      * @param period Período atual
      */
-    Student(const std::string &name, const std::string &email, const std::string &password, int registration, const std::string &course, int period);
+    Student(const std::string &name, const std::string &email, const std::string &password, std::string registration, const std::string &course, int period);
 
-    int getRegistration() const noexcept;
+    std::string getRegistration() const noexcept;
     const std::string& getCourse() const noexcept;
     int getPeriod() const noexcept;
 
-    void setRegistration(int newRegistration) noexcept;
+    void setRegistration(std::string newRegistration) noexcept;
     void setCourse(const std::string &newCourse) noexcept;
     void setPeriod(int newPeriod) noexcept;
 

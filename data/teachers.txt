@@ -1,0 +1,1 @@
+Gustavo Pinto Nogueira;gustavo@elite.br;$argon2id$v=19$m=262144,t=3,p=1$A0RsNF5t2JW4s7mxNLj6ng$EKrIxFChgeNirWNwiupbdqyzk+CYg94pKESeiUhNAm8;202507990804
