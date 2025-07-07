@@ -1,1 +1,1 @@
-Allan Nogueira Pinto;allan@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$DTDlzUPNI9/Up6Nxv6ediA$EwYOMF/N1mJeyHTVuJxmznqA7bYq0ZUfOlXq8Q/Id+8;202507016924;Engenharia de Software;3
+Allan Pinto Nogueira;allan@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$M+LDYZIV3L6U99xWiEsbFg$+CDaa2B3DXRwZNqd7489HCnBqnsIx0QYtirnbee9qVI;202507015099;Engenharia de Software;3

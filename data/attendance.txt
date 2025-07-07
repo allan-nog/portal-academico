@@ -1,0 +1,3 @@
+allan@aluno.elite.br;Algoritmos III;2025-07-07;P
+allan@aluno.elite.br;Algebra;2025-07-03;A
+allan@aluno.elite.br;Algebra;10-12-1983;P
