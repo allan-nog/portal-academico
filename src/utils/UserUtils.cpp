@@ -550,159 +550,218 @@ void listRequests() {
     }
 }
 
-void registerGradeAndAttendance() {
-    std::string email, courseName;
-    float grade, attendance;
+void registerGrade(const string& teacherEmail) {
+    string studentEmail, courseName;
+    double grade;
 
     setColor("blue");
-    std::cout << "\n---- REGISTRAR NOTA E FREQUÊNCIA ----\n";
+    cout << "\n----------- REGISTRAR NOTA -----------\n";
     resetColor();
 
-    std::cout << "Digite o e-mail do aluno: ";
-    std::getline(std::cin, email);
+    // Email do aluno
+    while (true) {
+        cout << "Digite o e-mail do aluno: ";
+        getline(cin, studentEmail);
+        if (!validateEmail(studentEmail, "student")) {
+            setColor("red");
+            cout << "Email inválido para aluno. Tente novamente.\n";
+            resetColor();
+        } else {
+            break;
+        }
+    }
 
-    std::cout << "Nome da disciplina: ";
-    std::getline(std::cin, courseName);
+    // Nome da disciplina
+    cout << "Digite o nome da disciplina: ";
+    getline(cin, courseName);
 
     // Nota
     while (true) {
-        std::cout << "Nota (0 a 10): ";
+        cout << "Digite a nota final (0 a 10): ";
         setColor("green");
-        if (std::cin >> grade && grade >= 0.0 && grade <= 10.0) {
+        if (cin >> grade && grade >= 0 && grade <= 10) {
             resetColor();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         } else {
             resetColor();
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             setColor("red");
-            std::cout << "Nota inválida. Digite um valor entre 0 e 10.\n";
+            cout << "Nota inválida. Deve ser um número entre 0 e 10.\n";
             resetColor();
         }
     }
 
-    // Frequência
-    while (true) {
-        std::cout << "Frequência (%): ";
-        setColor("green");
-        if (std::cin >> attendance && attendance >= 0.0 && attendance <= 100.0) {
-            resetColor();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            break;
+    // Processa arquivo
+    ifstream inFile("data/enrollments.txt");
+    ostringstream tempContent;
+    string line;
+    bool found = false;
+
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string fileEmail, fileCourse;
+        double fileGrade, fileAttendance;
+        string fileStatus;
+
+        getline(ss, fileEmail, ';');
+        getline(ss, fileCourse, ';');
+        ss >> fileGrade;
+        ss.ignore(); // pula o ';'
+        ss >> fileAttendance;
+        ss.ignore(); // pula o ';'
+        getline(ss, fileStatus);
+
+        if (fileEmail == studentEmail && fileCourse == courseName) {
+            found = true;
+            fileGrade = grade;
+
+            // Recalcula status
+            fileStatus = (fileGrade >= 6 && fileAttendance >= 75) ? "Aprovado" : "Reprovado";
+
+            tempContent << fileEmail << ";" << fileCourse << ";"
+                        << fileGrade << ";" << fileAttendance << ";" << fileStatus << "\n";
         } else {
-            resetColor();
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            setColor("red");
-            std::cout << "Frequência inválida. Digite um valor entre 0 e 100.\n";
-            resetColor();
-        }
-    }
-
-    // Calcula status
-    std::string status;
-    if (grade >= 6.0 && attendance >= 75.0) {
-        status = "Aprovado";
-    } else if (grade >= 3.0 && attendance >= 50.0) {
-        status = "Recuperação";
-    } else {
-        status = "Reprovado";
-    }
-
-    // Lê arquivo existente para atualizar se necessário
-    std::ifstream inFile("data/enrollments.txt");
-    std::ostringstream tempContent;
-    bool updated = false;
-
-    if (inFile) {
-        std::string line;
-        while (std::getline(inFile, line)) {
-            std::istringstream ss(line);
-            std::string e, c, g, f, s;
-
-            std::getline(ss, e, ';');
-            std::getline(ss, c, ';');
-            std::getline(ss, g, ';');
-            std::getline(ss, f, ';');
-            std::getline(ss, s, ';');
-
-            if (e == email && c == courseName) {
-                // Atualiza
-                tempContent << email << ";" << courseName << ";"
-                            << std::fixed << std::setprecision(2) << grade << ";"
-                            << attendance << ";" << status << "\n";
-                updated = true;
-            } else {
-                tempContent << line << "\n";
-            }
+            tempContent << line << "\n";
         }
     }
     inFile.close();
 
-    if (!updated) {
-        // Adiciona novo
-        tempContent << email << ";" << courseName << ";"
-                    << std::fixed << std::setprecision(2) << grade << ";"
-                    << attendance << ";" << status << "\n";
+    if (!found) {
+        // Novo registro
+        double attendance = 0;
+        string status = (grade >=6 && attendance >=75) ? "Aprovado" : "Reprovado";
+        tempContent << studentEmail << ";" << courseName << ";"
+                    << grade << ";" << attendance << ";" << status << "\n";
     }
 
-    // Escreve de volta
-    std::ofstream outFile("data/enrollments.txt");
+    ofstream outFile("data/enrollments.txt");
     outFile << tempContent.str();
     outFile.close();
 
     setColor("green");
-    if (updated)
-        std::cout << "Dados atualizados com sucesso para " << email << " em " << courseName << ".\n";
-    else
-        std::cout << "Nota e frequência registradas com sucesso para " << email << ".\n";
+    cout << "Nota registrada com sucesso!\n";
     resetColor();
 }
 
-void viewGradesAndAttendance(const std::string& studentEmail) {
-    std::ifstream inFile("data/enrollments.txt");
-    if (!inFile) {
-        setColor("red");
-        std::cerr << "Erro ao abrir o arquivo data/enrollments.txt\n";
-        resetColor();
-        return;
-    }
-
-    std::string line;
-    bool found = false;
+void registerAttendance(const string& teacherEmail) {
+    string studentEmail, courseName, date, presence;
 
     setColor("blue");
-    std::cout << "\n------ SUAS DISCIPLINAS ------\n";
+    cout << "\n----- REGISTRAR FREQUÊNCIA -----\n";
     resetColor();
 
-    while (std::getline(inFile, line)) {
-        std::istringstream ss(line);
-        std::string email, courseName, grade, attendance, status;
+    // Email do aluno
+    while (true) {
+        cout << "Digite o e-mail do aluno: ";
+        getline(cin, studentEmail);
+        if (!validateEmail(studentEmail, "student")) {
+            setColor("red");
+            cout << "Email inválido para aluno. Tente novamente.\n";
+            resetColor();
+        } else {
+            break;
+        }
+    }
 
-        std::getline(ss, email, ';');
-        std::getline(ss, courseName, ';');
-        std::getline(ss, grade, ';');
-        std::getline(ss, attendance, ';');
-        std::getline(ss, status, ';');
+    // Nome da disciplina
+    cout << "Digite o nome da disciplina: ";
+    getline(cin, courseName);
 
-        if (email == studentEmail) {
-            found = true;
-            setColor("yellow");
-            std::cout << "Disciplina: " << courseName << "\n";
-            std::cout << "Nota: " << grade << "\n";
-            std::cout << "Frequência: " << attendance << "%\n";
-            std::cout << "Status: " << status << "\n";
-            std::cout << "-------------------------\n";
+    // Data
+    cout << "Digite a data (YYYY-MM-DD) ou pressione ENTER para hoje: ";
+    getline(cin, date);
+    if (date.empty()) {
+        time_t now = time(nullptr);
+        char buf[11];
+        strftime(buf, sizeof(buf), "%Y-%m-%d", localtime(&now));
+        date = buf;
+    }
+
+    // Presença ou falta
+    while (true) {
+        cout << "Presença (P) ou Falta (A): ";
+        getline(cin, presence);
+        if (presence == "P" || presence == "p" || presence == "A" || presence == "a") {
+            presence[0] = toupper(presence[0]);
+            break;
+        } else {
+            setColor("red");
+            cout << "Digite apenas P ou A.\n";
             resetColor();
         }
     }
 
-    if (!found) {
-        setColor("red");
-        std::cout << "Nenhuma disciplina registrada para este aluno.\n";
-        resetColor();
+    // Grava em attendance.txt
+    ofstream attFile("data/attendance.txt", ios::app);
+    attFile << studentEmail << ";" << courseName << ";" << date << ";" << presence << "\n";
+    attFile.close();
+
+    // Agora recalcula % de presença
+    ifstream inFile("data/attendance.txt");
+    int total = 0, presentes = 0;
+    string line;
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string fEmail, fCourse, fDate, fStatus;
+        getline(ss, fEmail, ';');
+        getline(ss, fCourse, ';');
+        getline(ss, fDate, ';');
+        getline(ss, fStatus, ';');
+
+        if (fEmail == studentEmail && fCourse == courseName) {
+            total++;
+            if (fStatus == "P") presentes++;
+        }
     }
+    inFile.close();
+
+    double percent = (total > 0) ? (presentes * 100.0 / total) : 0.0;
+
+    // Atualiza enrollments.txt
+    ifstream enrFile("data/enrollments.txt");
+    ostringstream tempContent;
+    bool found = false;
+    while (getline(enrFile, line)) {
+        istringstream ss(line);
+        string eEmail, eCourse;
+        double grade, attPercent;
+        string status;
+
+        getline(ss, eEmail, ';');
+        getline(ss, eCourse, ';');
+        ss >> grade;
+        ss.ignore();
+        ss >> attPercent;
+        ss.ignore();
+        getline(ss, status);
+
+        if (eEmail == studentEmail && eCourse == courseName) {
+            found = true;
+            status = (grade >=6 && percent >=75) ? "Aprovado" : "Reprovado";
+            tempContent << eEmail << ";" << eCourse << ";" << grade << ";" 
+                        << fixed << setprecision(1) << percent << ";" << status << "\n";
+        } else {
+            tempContent << line << "\n";
+        }
+    }
+    enrFile.close();
+
+    if (!found) {
+        string status = (percent >=75) ? "Aprovado" : "Reprovado";
+        tempContent << studentEmail << ";" << courseName << ";0;" 
+                    << fixed << setprecision(1) << percent << ";" << status << "\n";
+    }
+
+    ofstream outFile("data/enrollments.txt");
+    outFile << tempContent.str();
+    outFile.close();
+
+    setColor("green");
+    cout << "Frequência registrada e situação atualizada com sucesso!\n";
+    resetColor();
 }
+
 
 

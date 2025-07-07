@@ -139,18 +139,25 @@ void listRequests();
 
 
 /**
- * @brief Registra nota e frequência para um aluno em uma disciplina,
- * atribuindo status Aprovado, Recuperação ou Reprovado.
+ * @brief Permite ao professor registrar ou atualizar a nota de um aluno em uma disciplina.
+ * 
+ * Atualiza ou cria o registro no arquivo data/enrollments.txt.
+ * Recalcula o status (Aprovado/Reprovado) automaticamente.
+ * 
+ * @param teacherEmail Email do professor logado (opcional para log/auditoria futura).
  */
-void registerGradeAndAttendance();
+void registerGrade(const std::string& teacherEmail);
 
 
 /**
- * @brief Exibe todas as disciplinas, notas, frequência e status do aluno autenticado.
+ * @brief Permite ao professor registrar presença ou falta do aluno e recalcula frequência.
  * 
- * @param studentEmail Email do aluno logado.
+ * Atualiza attendance.txt e depois ajusta percentuais em enrollments.txt.
+ * 
+ * @param teacherEmail Email do professor logado (para logs futuros).
  */
-void viewGradesAndAttendance(const std::string& studentEmail);
+void registerAttendance(const std::string& teacherEmail);
+
 
 
 

@@ -167,12 +167,10 @@ void teacherPortal(){
                                 break;
                             }
                             case 3:
-                                registerGradeAndAttendance();
+                                registerGrade(user.getEmail());
                                 break;
                             case 4:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
-                                resetColor();
+                                registerAttendance(user.getEmail());
                                 break;
                             default:
                                 setColor("red");
