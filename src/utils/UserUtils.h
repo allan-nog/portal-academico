@@ -159,5 +159,27 @@ void registerGrade(const std::string& teacherEmail);
 void registerAttendance(const std::string& teacherEmail);
 
 
+/**
+ * @brief Permite ao aluno visualizar suas notas e situação final em cada disciplina.
+ * 
+ * Lê o arquivo data/enrollments.txt e exibe grade, frequência consolidada e status.
+ * 
+ * @param studentEmail Email do aluno autenticado.
+ */
+void viewGrades(const std::string& studentEmail);
+
+
+/**
+ * @brief Permite ao aluno visualizar seu histórico detalhado de frequência (datas + P/A).
+ * 
+ * Exibe dados do arquivo data/attendance.txt em forma de tabela.
+ * 
+ * @param studentEmail Email do aluno autenticado.
+ */
+void viewAttendance(const std::string& studentEmail);
+
+
+
+
 
 

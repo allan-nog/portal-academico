@@ -763,5 +763,101 @@ void registerAttendance(const string& teacherEmail) {
     resetColor();
 }
 
+void viewGrades(const string& studentEmail) {
+    ifstream inFile("data/enrollments.txt");
+    if (!inFile) {
+        setColor("red");
+        cout << "Nenhum dado de matrícula encontrado.\n";
+        resetColor();
+        return;
+    }
+
+    string line;
+    bool found = false;
+
+    setColor("blue");
+    cout << "\n---------- SUAS NOTAS ----------\n";
+    resetColor();
+
+    cout << left << setw(25) << "Disciplina" 
+              << setw(8) << "Nota" 
+              << setw(12) << "Freq(%)" 
+              << "Status\n";
+    cout << "-----------------------------------------------\n";
+
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string email, course, status;
+        double grade, attendance;
+
+        getline(ss, email, ';');
+        getline(ss, course, ';');
+        ss >> grade;
+        ss.ignore();
+        ss >> attendance;
+        ss.ignore();
+        getline(ss, status);
+
+        if (email == studentEmail) {
+            found = true;
+            cout << left << setw(25) << course
+                      << setw(8) << fixed << setprecision(1) << grade
+                      << setw(12) << attendance
+                      << status << "\n";
+        }
+    }
+
+    if (!found) {
+        setColor("red");
+        cout << "Nenhuma disciplina encontrada.\n";
+        resetColor();
+    }
+}
+
+void viewAttendance(const string& studentEmail) {
+    ifstream inFile("data/attendance.txt");
+    if (!inFile) {
+        setColor("red");
+        cout << "Nenhum registro de frequência encontrado.\n";
+        resetColor();
+        return;
+    }
+
+    string line;
+    bool found = false;
+
+    setColor("blue");
+    cout << "\n------ HISTÓRICO DE FREQUÊNCIA ------\n";
+    resetColor();
+
+    cout << left << setw(25) << "Disciplina"
+              << setw(15) << "Data"
+              << "Status\n";
+    cout << "---------------------------------------------\n";
+
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string email, course, date, pa;
+
+        getline(ss, email, ';');
+        getline(ss, course, ';');
+        getline(ss, date, ';');
+        getline(ss, pa, ';');
+
+        if (email == studentEmail) {
+            found = true;
+            cout << left << setw(25) << course
+                      << setw(15) << date
+                      << pa << "\n";
+        }
+    }
+
+    if (!found) {
+        setColor("red");
+        cout << "Nenhum registro encontrado para este aluno.\n";
+        resetColor();
+    }
+}
+
 
 

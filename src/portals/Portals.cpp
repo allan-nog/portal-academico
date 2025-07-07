@@ -74,12 +74,10 @@ void studentPortal(){
                                 break;
                             }
                             case 3:
-                                viewGradesAndAttendance(user.getEmail());
+                                viewGrades(user.getEmail());
                                 break;
                             case 4:
-                                setColor("red");
-                                cout << "Funcionalidade ainda não implementada.\n";
-                                resetColor();
+                                viewAttendance(user.getEmail());
                                 break;
                             case 5:
                                 createRequest(user.getEmail());
