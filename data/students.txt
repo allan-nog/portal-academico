@@ -1,2 +1,3 @@
 Allan Pinto Nogueira;allan@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$aSTF1gDdcAcVR8Y9u1vU1w$XZvlqFQF4wScxnvraOdK3qqnZVlC1ANwGkBsNsRYlTA;202507016460;Engenharia de Software;3
 Gustavo Pinto Nogueira;gustavo@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$s0I4z8wDoyPgJ0jaTXmalA$ldBvsD+MvLQCGpQB+uCCo+l6sKg6hX5nlP810efSGeQ;202507076867;Segurança da informação;1
+Allan Pinto Nogueira;allan10@aluno.elite.br;$argon2id$v=19$m=262144,t=3,p=1$hYOnzgPf/IfA1PsCyaVhRA$v33pyu6xIs7GsoLWLrnU9HpGvhTgSxFA/Hq4aLFK6rc;202507081558;Ciência de Dados;8

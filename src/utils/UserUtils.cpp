@@ -139,6 +139,68 @@ bool loadUser(const string& email, const string& userType, User* userOut) {
     return false; // Não encontrado
 }
 
+bool loadStudentByRegistration(const string& registration, User* userOut) {
+    ifstream inFile("data/students.txt");
+    if (!inFile) {
+        setColor("red");
+        cerr << "Erro ao abrir o arquivo: data/students.txt\n";
+        resetColor();
+        return false;
+    }
+
+    string line;
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string name, email, password, regFile, rest;
+
+        getline(ss, name, ';');
+        getline(ss, email, ';');
+        getline(ss, password, ';');
+        getline(ss, regFile, ';');
+        getline(ss, rest);
+
+        if (regFile == registration) {
+            if (userOut != nullptr) {
+                *userOut = User(name, email, password);
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+bool loadStudentByEmail(const std::string& email, Student* studentOut) {
+    std::ifstream inFile("data/students.txt");
+    if (!inFile) {
+        setColor("red");
+        std::cerr << "Erro ao abrir o arquivo data/students.txt\n";
+        resetColor();
+        return false;
+    }
+
+    std::string line;
+    while (getline(inFile, line)) {
+        std::istringstream ss(line);
+        std::string name, storedEmail, hashedPassword, registration, course;
+        int period;
+
+        getline(ss, name, ';');
+        getline(ss, storedEmail, ';');
+        getline(ss, hashedPassword, ';');
+        getline(ss, registration, ';');
+        getline(ss, course, ';');
+        ss >> period;
+
+        if (storedEmail == email) {
+            if (studentOut != nullptr) {
+                *studentOut = Student(name, storedEmail, hashedPassword, registration, course, period);
+            }
+            return true;
+        }
+    }
+    return false; // não encontrado
+}
+
 // Função principal para registro de usuário
 int registerUser(const string &userType) {
     string name, email, passwordEntered, confirmationPasswordEntered;
@@ -574,22 +636,51 @@ void listRequests() {
 
 void registerGrade(const string& teacherEmail) {
     while (true) {
-        string studentEmail, discipline;
+        string studentEmail, registration, discipline;
         double grade;
+        bool found = false;
+        User student;
 
         setColor("blue");
         cout << "\n-------------- REGISTRO DE NOTAS --------------\n";
         resetColor();
 
-        cout << "Email do aluno: ";
-        getline(cin, studentEmail);
+        cout << "Você quer buscar o aluno por:\n";
+        cout << "[1] Matrícula\n";
+        cout << "[2] E-mail\n";
+        int searchOption = safeReadInt("Escolha uma opção: ");
 
-        // Confirma se o aluno existe
-        if (!loadUser(studentEmail, "student")) {
-            setColor("red");
-            cout << "Aluno não encontrado. Não é possível lançar nota.\n";
-            resetColor();
+        if (searchOption == 1) {
+            cout << "Matrícula do aluno: ";
+            getline(cin, registration);
+
+            if (!loadStudentByRegistration(registration, &student)) {
+                setColor("red");
+                cout << "Aluno não encontrado.\n";
+                resetColor();
+            } else {
+                studentEmail = student.getEmail();
+                found = true;
+            }
+
         } else {
+            cout << "Email do aluno: ";
+            getline(cin, studentEmail);
+
+            if (!loadUser(studentEmail, "student", &student)) {
+                setColor("red");
+                cout << "Aluno não encontrado.\n";
+                resetColor();
+            } else {
+                found = true;
+            }
+        }
+
+        if (found) {
+            cout << "Aluno encontrado: " << student.getName()
+                 << " | Matrícula: " << (registration.empty() ? "[não carregada]" : registration)
+                 << " | Email: " << student.getEmail() << "\n";
+
             cout << "Disciplina: ";
             getline(cin, discipline);
             
@@ -610,10 +701,10 @@ void registerGrade(const string& teacherEmail) {
                 }
             }
 
-            // Vai tentar atualizar no enrollments.txt
+            // Atualiza ou cria registro
             ifstream inFile("data/enrollments.txt");
             ostringstream tempContent;
-            bool found = false;
+            bool foundEnrollment = false;
             string line;
 
             while (getline(inFile, line)) {
@@ -631,9 +722,7 @@ void registerGrade(const string& teacherEmail) {
                 getline(ss, statusFile);
 
                 if (emailFile == studentEmail && disciplineFile == discipline) {
-                    found = true;
-                    
-                    // Calcula status correto
+                    foundEnrollment = true;
                     string status;
                     if (grade >= 60 && attendanceFile >= 75)
                         status = "Aprovado";
@@ -652,21 +741,16 @@ void registerGrade(const string& teacherEmail) {
             }
             inFile.close();
 
-            if (!found) {
-                // Não encontrou - cria linha nova (freq inicial 0)
-                double attendanceFile = 0;
+            if (!foundEnrollment) {
                 string status;
-                if (grade >= 60 && attendanceFile >= 75)
+                if (grade >= 60 && 0 >= 75)
                     status = "Aprovado";
-                else if (grade >= 30 && grade < 60 && attendanceFile >= 50)
+                else if (grade >= 30 && grade < 60 && 0 >= 50)
                     status = "Recuperação";
                 else
                     status = "Reprovado";
 
-                tempContent << studentEmail << ";" << discipline << ";" 
-                            << grade << ";" 
-                            << fixed << setprecision(1) << attendanceFile << ";" 
-                            << status << "\n";
+                tempContent << studentEmail << ";" << discipline << ";" << grade << ";0;" << status << "\n";
             }
 
             ofstream outFile("data/enrollments.txt");
@@ -674,11 +758,10 @@ void registerGrade(const string& teacherEmail) {
             outFile.close();
 
             setColor("green");
-            cout << "Nota registrada com sucesso!\n";
+            cout << "Nota registrada e situação atualizada com sucesso!\n";
             resetColor();
         }
 
-        // Pergunta se quer continuar
         string answer;
         cout << "Deseja lançar nota para outro aluno? (s/n): ";
         getline(cin, answer);
@@ -691,27 +774,54 @@ void registerGrade(const string& teacherEmail) {
 
 void registerAttendance(const string& teacherEmail) {
     while (true) {
-        string studentEmail, discipline, date;
-        bool present;
+        string studentEmail, registration, discipline, date;
+        bool found = false;
+        User student;
 
         setColor("blue");
         cout << "\n------------ REGISTRO DE FREQUÊNCIA ------------\n";
         resetColor();
 
-        // 1. Pega email e valida
-        cout << "Email do aluno: ";
-        getline(cin, studentEmail);
+        cout << "Você quer buscar o aluno por:\n";
+        cout << "[1] Matrícula\n";
+        cout << "[2] E-mail\n";
+        int searchOption = safeReadInt("Escolha uma opção: ");
 
-        if (!loadUser(studentEmail, "student")) {
-            setColor("red");
-            cout << "Aluno não encontrado. Não é possível lançar frequência.\n";
-            resetColor();
+        if (searchOption == 1) {
+            cout << "Matrícula do aluno: ";
+            getline(cin, registration);
+
+            if (!loadStudentByRegistration(registration, &student)) {
+                setColor("red");
+                cout << "Aluno não encontrado.\n";
+                resetColor();
+            } else {
+                studentEmail = student.getEmail();
+                found = true;
+            }
+
         } else {
-            // 2. Disciplina
+            cout << "Email do aluno: ";
+            getline(cin, studentEmail);
+
+            if (!loadUser(studentEmail, "student", &student)) {
+                setColor("red");
+                cout << "Aluno não encontrado.\n";
+                resetColor();
+            } else {
+                found = true;
+            }
+        }
+
+        if (found) {
+            cout << "Aluno encontrado: " << student.getName()
+                 << " | Matrícula: " << (registration.empty() ? "[não carregada]" : registration)
+                 << " | Email: " << student.getEmail() << "\n";
+
             cout << "Disciplina: ";
             getline(cin, discipline);
 
-            // 3. Data
+            // Validação básica de data YYYY-MM-DD
             while (true) {
                 cout << "Data (YYYY-MM-DD) ou pressione ENTER para hoje: ";
                 getline(cin, date);
@@ -733,8 +843,8 @@ void registerAttendance(const string& teacherEmail) {
                 }
             }
 
-            // 4. Presença
             string presenceInput;
+            bool present;
             while (true) {
                 cout << "Presença (P) ou Falta (F): ";
                 getline(cin, presenceInput);
@@ -751,12 +861,11 @@ void registerAttendance(const string& teacherEmail) {
                 }
             }
 
-            // 5. Grava attendance
             ofstream attFile("data/attendance.txt", ios::app);
             attFile << studentEmail << ";" << discipline << ";" << date << ";" << (present ? "P" : "F") << "\n";
             attFile.close();
 
-            // 6. Recalcula presença no arquivo enrollment
+            // Recalcula frequência no arquivo enrollment
             ifstream inFile("data/attendance.txt");
             int total = 0, presentes = 0;
             string line;
@@ -777,10 +886,10 @@ void registerAttendance(const string& teacherEmail) {
 
             double percent = (total > 0) ? (presentes * 100.0 / total) : 0.0;
 
-            // Atualiza enrollments
+            // Atualiza enrollment
             ifstream enrFile("data/enrollments.txt");
             ostringstream tempContent;
-            bool found = false;
+            bool foundEnrollment = false;
             while (getline(enrFile, line)) {
                 istringstream ss(line);
                 string eEmail, eCourse;
@@ -796,7 +905,7 @@ void registerAttendance(const string& teacherEmail) {
                 getline(ss, status);
 
                 if (eEmail == studentEmail && eCourse == discipline) {
-                    found = true;
+                    foundEnrollment = true;
                     if (grade >= 60 && percent >= 75)
                         status = "Aprovado";
                     else if (grade >= 30 && grade < 60 && percent >= 50)
@@ -804,30 +913,25 @@ void registerAttendance(const string& teacherEmail) {
                     else
                         status = "Reprovado";
 
-                    tempContent << eEmail << ";" << eCourse << ";" 
-                                << grade << ";" 
-                                << fixed << setprecision(1) << percent << ";" 
-                                << status << "\n";
+                    tempContent << eEmail << ";" << eCourse << ";" << grade << ";" 
+                                << fixed << setprecision(1) << percent << ";" << status << "\n";
                 } else {
                     tempContent << line << "\n";
                 }
             }
             enrFile.close();
 
-            if (!found) {
-                double grade = 0;
+            if (!foundEnrollment) {
                 string status;
-                if (grade >= 60 && percent >= 75)
+                if (0 >= 60 && percent >= 75)
                     status = "Aprovado";
-                else if (grade >= 30 && grade < 60 && percent >= 50)
+                else if (0 >= 30 && 0 < 60 && percent >= 50)
                     status = "Recuperação";
                 else
                     status = "Reprovado";
 
-                tempContent << studentEmail << ";" << discipline << ";" 
-                            << grade << ";" 
-                            << fixed << setprecision(1) << percent << ";" 
-                            << status << "\n";
+                tempContent << studentEmail << ";" << discipline << ";0;" 
+                            << fixed << setprecision(1) << percent << ";" << status << "\n";
             }
 
             ofstream outFile("data/enrollments.txt");
@@ -839,7 +943,6 @@ void registerAttendance(const string& teacherEmail) {
             resetColor();
         }
 
-        // 7. Pergunta se deseja continuar
         string answer;
         cout << "Deseja lançar frequência para outro aluno? (s/n): ";
         getline(cin, answer);

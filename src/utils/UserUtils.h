@@ -65,6 +65,25 @@ void saveTeacher(const Teacher& teacher);
  */
 bool loadUser(const std::string& email, const std::string& userType, User* userOut = nullptr);
 
+/**
+ * @brief Carrega um aluno pelo número de matrícula.
+ * 
+ * @param registration Matrícula do aluno a buscar.
+ * @param userOut Ponteiro opcional para retornar dados básicos do User.
+ * @return true se encontrado, false se não encontrado.
+ */
+bool loadStudentByRegistration(const std::string& registration, User* userOut = nullptr);
+
+/**
+ * @brief Carrega um estudante do arquivo pelo email.
+ * 
+ * Preenche todos os dados do objeto Student.
+ * 
+ * @param email Email do aluno.
+ * @param studentOut Ponteiro para receber o objeto Student carregado.
+ * @return true se encontrou, false se não encontrou.
+ */
+bool loadStudentByEmail(const std::string& email, Student* studentOut);
 
 /**
  * @brief Registra um novo usuário (student ou teacher) interativamente via terminal.
