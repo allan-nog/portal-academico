@@ -1,3 +1,0 @@
-allan@aluno.elite.br;Algoritmos III;8;100.0;Aprovado
-allan@aluno.elitee.br;Algoritmos III;10;0;Reprovado
-allan@aluno.elite.br;Algebra;5;50.0;Reprovado

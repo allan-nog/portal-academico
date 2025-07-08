@@ -636,123 +636,147 @@ void registerGrade(const string& teacherEmail) {
     }
 }
 
-
 void registerAttendance(const string& teacherEmail) {
-    string studentEmail, courseName, date, presence;
-
-    setColor("blue");
-    cout << "\n------------- REGISTRAR FREQUÊNCIA -------------\n";
-    resetColor();
-
-    // Email do aluno
     while (true) {
-        cout << "Digite o e-mail do aluno: ";
+        string studentEmail, discipline, date;
+        bool present;
+
+        setColor("blue");
+        cout << "\n------------ REGISTRO DE FREQUÊNCIA ------------\n";
+        resetColor();
+
+        // 1. Pega email e valida
+        cout << "Email do aluno: ";
         getline(cin, studentEmail);
-        if (!validateEmail(studentEmail, "student")) {
+
+        if (!loadUser(studentEmail, "student")) {
             setColor("red");
-            cout << "Email inválido para aluno. Tente novamente.\n";
+            cout << "Aluno não encontrado. Não é possível lançar frequência.\n";
             resetColor();
         } else {
-            break;
-        }
-    }
+            // 2. Disciplina
+            cout << "Disciplina: ";
+            getline(cin, discipline);
 
-    // Nome da disciplina
-    cout << "Digite o nome da disciplina: ";
-    getline(cin, courseName);
+            // 3. Data
+            while (true) {
+                cout << "Data (YYYY-MM-DD) ou pressione ENTER para hoje: ";
+                getline(cin, date);
 
-    // Data
-    cout << "Digite a data (YYYY-MM-DD) ou pressione ENTER para hoje: ";
-    getline(cin, date);
-    if (date.empty()) {
-        time_t now = time(nullptr);
-        char buf[11];
-        strftime(buf, sizeof(buf), "%Y-%m-%d", localtime(&now));
-        date = buf;
-    }
+                if (date.empty()) {
+                    time_t now = time(nullptr);
+                    char buf[11];
+                    strftime(buf, sizeof(buf), "%Y-%m-%d", localtime(&now));
+                    date = buf;
+                    break;
+                } 
+                else if (date.size() == 10 && date[4] == '-' && date[7] == '-') {
+                    break;
+                } 
+                else {
+                    setColor("red");
+                    cout << "Formato de data inválido. Use YYYY-MM-DD ou deixe vazio para data atual.\n";
+                    resetColor();
+                }
+            }
 
-    // Presença ou falta
-    while (true) {
-        cout << "Presença (P) ou Falta (A): ";
-        getline(cin, presence);
-        if (presence == "P" || presence == "p" || presence == "A" || presence == "a") {
-            presence[0] = toupper(presence[0]);
-            break;
-        } else {
-            setColor("red");
-            cout << "Digite apenas P ou A.\n";
+            // 4. Presença
+            string presenceInput;
+            while (true) {
+                cout << "Presença (P) ou Falta (F): ";
+                getline(cin, presenceInput);
+                if (presenceInput == "P" || presenceInput == "p") {
+                    present = true;
+                    break;
+                } else if (presenceInput == "F" || presenceInput == "f") {
+                    present = false;
+                    break;
+                } else {
+                    setColor("red");
+                    cout << "Opção inválida. Digite 'P' ou 'F'.\n";
+                    resetColor();
+                }
+            }
+
+            // 5. Grava attendance
+            std::ofstream attFile("data/attendance.txt", std::ios::app);
+            attFile << studentEmail << ";" << discipline << ";" << date << ";" << (present ? "P" : "F") << "\n";
+            attFile.close();
+
+            // 6. Recalcula presença no arquivo enrollment
+            std::ifstream inFile("data/attendance.txt");
+            int total = 0, presentes = 0;
+            std::string line;
+            while (getline(inFile, line)) {
+                std::istringstream ss(line);
+                std::string fEmail, fCourse, fDate, fStatus;
+                getline(ss, fEmail, ';');
+                getline(ss, fCourse, ';');
+                getline(ss, fDate, ';');
+                getline(ss, fStatus, ';');
+
+                if (fEmail == studentEmail && fCourse == discipline) {
+                    total++;
+                    if (fStatus == "P") presentes++;
+                }
+            }
+            inFile.close();
+
+            double percent = (total > 0) ? (presentes * 100.0 / total) : 0.0;
+
+            // Atualiza enrollments
+            std::ifstream enrFile("data/enrollments.txt");
+            std::ostringstream tempContent;
+            bool found = false;
+            while (getline(enrFile, line)) {
+                std::istringstream ss(line);
+                std::string eEmail, eCourse;
+                double grade, attPercent;
+                std::string status;
+
+                getline(ss, eEmail, ';');
+                getline(ss, eCourse, ';');
+                ss >> grade;
+                ss.ignore();
+                ss >> attPercent;
+                ss.ignore();
+                getline(ss, status);
+
+                if (eEmail == studentEmail && eCourse == discipline) {
+                    found = true;
+                    status = (grade >=6 && percent >=75) ? "Aprovado" : "Reprovado";
+                    tempContent << eEmail << ";" << eCourse << ";" << grade << ";" 
+                                << std::fixed << std::setprecision(1) << percent << ";" << status << "\n";
+                } else {
+                    tempContent << line << "\n";
+                }
+            }
+            enrFile.close();
+
+            if (!found) {
+                std::string status = (percent >=75) ? "Aprovado" : "Reprovado";
+                tempContent << studentEmail << ";" << discipline << ";0;" 
+                            << std::fixed << std::setprecision(1) << percent << ";" << status << "\n";
+            }
+
+            std::ofstream outFile("data/enrollments.txt");
+            outFile << tempContent.str();
+            outFile.close();
+
+            setColor("green");
+            cout << "Frequência registrada e situação atualizada com sucesso!\n";
             resetColor();
         }
-    }
 
-    // Grava em attendance.txt
-    ofstream attFile("data/attendance.txt", ios::app);
-    attFile << studentEmail << ";" << courseName << ";" << date << ";" << presence << "\n";
-    attFile.close();
-
-    // Agora recalcula % de presença
-    ifstream inFile("data/attendance.txt");
-    int total = 0, presentes = 0;
-    string line;
-    while (getline(inFile, line)) {
-        istringstream ss(line);
-        string fEmail, fCourse, fDate, fStatus;
-        getline(ss, fEmail, ';');
-        getline(ss, fCourse, ';');
-        getline(ss, fDate, ';');
-        getline(ss, fStatus, ';');
-
-        if (fEmail == studentEmail && fCourse == courseName) {
-            total++;
-            if (fStatus == "P") presentes++;
+        // 7. Pergunta se deseja continuar
+        string answer;
+        cout << "Deseja lançar frequência para outro aluno? (s/n): ";
+        getline(cin, answer);
+        if (answer != "s" && answer != "S") {
+            break;
         }
+        clearConsole();
     }
-    inFile.close();
-
-    double percent = (total > 0) ? (presentes * 100.0 / total) : 0.0;
-
-    // Atualiza enrollments.txt
-    ifstream enrFile("data/enrollments.txt");
-    ostringstream tempContent;
-    bool found = false;
-    while (getline(enrFile, line)) {
-        istringstream ss(line);
-        string eEmail, eCourse;
-        double grade, attPercent;
-        string status;
-
-        getline(ss, eEmail, ';');
-        getline(ss, eCourse, ';');
-        ss >> grade;
-        ss.ignore();
-        ss >> attPercent;
-        ss.ignore();
-        getline(ss, status);
-
-        if (eEmail == studentEmail && eCourse == courseName) {
-            found = true;
-            status = (grade >=6 && percent >=75) ? "Aprovado" : "Reprovado";
-            tempContent << eEmail << ";" << eCourse << ";" << grade << ";" 
-                        << fixed << setprecision(1) << percent << ";" << status << "\n";
-        } else {
-            tempContent << line << "\n";
-        }
-    }
-    enrFile.close();
-
-    if (!found) {
-        string status = (percent >=75) ? "Aprovado" : "Reprovado";
-        tempContent << studentEmail << ";" << courseName << ";0;" 
-                    << fixed << setprecision(1) << percent << ";" << status << "\n";
-    }
-
-    ofstream outFile("data/enrollments.txt");
-    outFile << tempContent.str();
-    outFile.close();
-
-    setColor("green");
-    cout << "Frequência registrada e situação atualizada com sucesso!\n";
-    resetColor();
 }
 
 void viewGrades(const string& studentEmail) {
@@ -768,14 +792,14 @@ void viewGrades(const string& studentEmail) {
     bool found = false;
 
     setColor("blue");
-    cout << "\n----------------- SUAS NOTAS ------------------\n";
+    cout << "\n------------------- SUAS NOTAS --------------------\n";
     resetColor();
 
     cout << left << setw(25) << "Disciplina" 
               << setw(8) << "Nota" 
               << setw(12) << "Freq(%)" 
               << "Status\n";
-    cout << "-----------------------------------------------\n";
+    cout << "---------------------------------------------------\n";
 
     while (getline(inFile, line)) {
         istringstream ss(line);
@@ -806,109 +830,50 @@ void viewGrades(const string& studentEmail) {
     }
 }
 
-void registerAttendance(const string& teacherEmail) {
-    while (true) {
-        string studentEmail, discipline, date;
-        bool present;
-
-        setColor("blue");
-        cout << "\n------------ REGISTRO DE FREQUÊNCIA ------------\n";
+void viewAttendance(const string& studentEmail) {
+    ifstream inFile("data/attendance.txt");
+    if (!inFile) {
+        setColor("red");
+        cout << "Nenhum registro de frequência encontrado.\n";
         resetColor();
+        return;
+    }
 
-        cout << "Email do aluno: ";
-        getline(cin, studentEmail);
+    string line;
+    bool found = false;
 
-        // Verifica se o aluno existe
-        if (!loadUser(studentEmail, "student")) {
-            setColor("red");
-            cout << "Aluno não encontrado. Não é possível lançar frequência.\n";
-            resetColor();
-        } else {
-            cout << "Disciplina: ";
-            getline(cin, discipline);
+    setColor("blue");
+    cout << "\n----------- HISTÓRICO DE FREQUÊNCIA -----------\n";
+    resetColor();
 
-            // Validação básica de data YYYY-MM-DD
-            while (true) {
-                cout << "Data (YYYY-MM-DD): ";
-                getline(cin, date);
+    cout << left << setw(25) << "Disciplina"
+              << setw(15) << "Data"
+              << "Status\n";
+    cout << "-----------------------------------------------\n";
 
-                if (date.size() == 10 && date[4] == '-' && date[7] == '-') {
-                    break;
-                } else {
-                    setColor("red");
-                    cout << "Formato de data inválido. Use YYYY-MM-DD.\n";
-                    resetColor();
-                }
-            }
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string email, course, date, pa;
 
-            string presenceInput;
-            while (true) {
-                cout << "Presença (s para presente, n para falta): ";
-                getline(cin, presenceInput);
-                if (presenceInput == "s" || presenceInput == "S") {
-                    present = true;
-                    break;
-                } else if (presenceInput == "n" || presenceInput == "N") {
-                    present = false;
-                    break;
-                } else {
-                    setColor("red");
-                    cout << "Opção inválida. Digite 's' ou 'n'.\n";
-                    resetColor();
-                }
-            }
+        getline(ss, email, ';');
+        getline(ss, course, ';');
+        getline(ss, date, ';');
+        getline(ss, pa, ';');
 
-            // Atualiza arquivo de frequência
-            ifstream inFile("data/enrollments.txt");
-            ostringstream tempContent;
-            bool found = false;
-            string line;
-
-            while (getline(inFile, line)) {
-                istringstream ss(line);
-                string emailFile, disciplineFile, gradeStr, status;
-                getline(ss, emailFile, ';');
-                getline(ss, disciplineFile, ';');
-                getline(ss, gradeStr, ';');
-                getline(ss, status, ';');
-
-                if (emailFile == studentEmail && disciplineFile == discipline) {
-                    found = true;
-                    // Adiciona presença atual ao final da linha
-                    tempContent << emailFile << ";" << disciplineFile << ";" << gradeStr << ";" << status
-                                << ";" << date << ":" << (present ? "P" : "F") << "\n";
-                } else {
-                    tempContent << line << "\n";
-                }
-            }
-            inFile.close();
-
-            if (!found) {
-                setColor("red");
-                cout << "Aluno não possui registro de matrícula na disciplina. Cadastre primeiro a nota.\n";
-                resetColor();
-            } else {
-                ofstream outFile("data/enrollments.txt");
-                outFile << tempContent.str();
-                outFile.close();
-
-                setColor("green");
-                cout << "Frequência registrada com sucesso!\n";
-                resetColor();
-            }
+        if (email == studentEmail) {
+            found = true;
+            cout << left << setw(25) << course
+                      << setw(15) << date
+                      << pa << "\n";
         }
+    }
 
-        // Pergunta se quer continuar
-        string answer;
-        cout << "Deseja lançar frequência para outro aluno? (s/n): ";
-        getline(cin, answer);
-        if (answer != "s" && answer != "S") {
-            break;
-        }
-        clearConsole();
+    if (!found) {
+        setColor("red");
+        cout << "Nenhum registro encontrado para este aluno.\n";
+        resetColor();
     }
 }
-
 
 
 

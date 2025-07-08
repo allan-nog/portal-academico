@@ -1,1 +1,0 @@
-Gustavo Pinto;gustavo@elite.br;$argon2id$v=19$m=262144,t=3,p=1$ud3W/E4wQvUNUAzAJes+Kg$x6aIp8C19gFwNlsQ1Om8XL0XOZSoZNR2U3iKUCWWBY0;202507997988
