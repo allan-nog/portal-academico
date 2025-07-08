@@ -2,6 +2,7 @@
 #include "ConsoleUtils.h"
 #include "Validador.h"
 #include "IdUtils.h"
+#include "Courses.h"
 #include "../core/User.h"
 #include "../core/Student.h"
 #include "../core/Teacher.h"
@@ -195,19 +196,40 @@ int registerUser(const string &userType) {
         } else passwordIsValid = true;
     }
 
-    // Salva no arquivo adequado
+    // Cadastro do aluno com escolha de curso
     if (userType == "student") {
-        string course;
-        cout << "Digite o curso: ";
-        getline(cin, course);
+        const auto& courses = getAvailableCourses();
+        int courseOption = -1;
 
+        // Exibe lista de cursos
+        while (true) {
+            setColor("blue");
+            cout << "\nEscolha o curso:\n";
+            resetColor();
+            for (size_t i = 0; i < courses.size(); ++i) {
+                cout << "[" << (i+1) << "] - " << courses[i] << "\n";
+            }
+            setColor("blue");
+            cout << "-----------------------------\n";
+            resetColor();
+            courseOption = safeReadInt("Digite o número do curso: ");
+
+            if (courseOption >= 1 && static_cast<size_t>(courseOption) <= courses.size()) {
+                break;
+            } else {
+                setColor("red");
+                cout << "Opção inválida. Tente novamente.\n";
+                resetColor();
+            }
+        }
+
+        string course = courses[courseOption - 1];
         int period = safeReadInt("Digite o período atual: ");
 
-        string registration = generateStudentRegistration(1); // código fixo do curso = 1
+        string registration = generateStudentRegistration(courseOption); // passa o código do curso
 
         Student student(name, email, hashPassword(passwordEntered), registration, course, period);
         saveStudent(student);
-
     } else if (userType == "teacher") {
         string siape = generateTeacherSiape();
         Teacher teacher(name, email, hashPassword(passwordEntered), siape);
@@ -588,10 +610,7 @@ void registerGrade(const string& teacherEmail) {
                 }
             }
 
-            // Padrão de status
-            string status = (grade >= 60) ? "Aprovado" : "Reprovado";
-
-            // Atualiza ou cria o registro
+            // Vai tentar atualizar no enrollments.txt
             ifstream inFile("data/enrollments.txt");
             ostringstream tempContent;
             bool found = false;
@@ -599,13 +618,34 @@ void registerGrade(const string& teacherEmail) {
 
             while (getline(inFile, line)) {
                 istringstream ss(line);
-                string emailFile, disciplineFile, rest;
+                string emailFile, disciplineFile;
+                double gradeFile, attendanceFile;
+                string statusFile;
+
                 getline(ss, emailFile, ';');
                 getline(ss, disciplineFile, ';');
+                ss >> gradeFile;
+                ss.ignore();
+                ss >> attendanceFile;
+                ss.ignore();
+                getline(ss, statusFile);
 
                 if (emailFile == studentEmail && disciplineFile == discipline) {
                     found = true;
-                    tempContent << studentEmail << ";" << discipline << ";" << grade << ";" << status << "\n";
+                    
+                    // Calcula status correto
+                    string status;
+                    if (grade >= 60 && attendanceFile >= 75)
+                        status = "Aprovado";
+                    else if (grade >= 30 && grade < 60 && attendanceFile >= 50)
+                        status = "Recuperação";
+                    else
+                        status = "Reprovado";
+
+                    tempContent << emailFile << ";" << disciplineFile << ";" 
+                                << grade << ";" 
+                                << fixed << setprecision(1) << attendanceFile << ";" 
+                                << status << "\n";
                 } else {
                     tempContent << line << "\n";
                 }
@@ -613,7 +653,20 @@ void registerGrade(const string& teacherEmail) {
             inFile.close();
 
             if (!found) {
-                tempContent << studentEmail << ";" << discipline << ";" << grade << ";" << status << "\n";
+                // Não encontrou - cria linha nova (freq inicial 0)
+                double attendanceFile = 0;
+                string status;
+                if (grade >= 60 && attendanceFile >= 75)
+                    status = "Aprovado";
+                else if (grade >= 30 && grade < 60 && attendanceFile >= 50)
+                    status = "Recuperação";
+                else
+                    status = "Reprovado";
+
+                tempContent << studentEmail << ";" << discipline << ";" 
+                            << grade << ";" 
+                            << fixed << setprecision(1) << attendanceFile << ";" 
+                            << status << "\n";
             }
 
             ofstream outFile("data/enrollments.txt");
@@ -699,17 +752,17 @@ void registerAttendance(const string& teacherEmail) {
             }
 
             // 5. Grava attendance
-            std::ofstream attFile("data/attendance.txt", std::ios::app);
+            ofstream attFile("data/attendance.txt", ios::app);
             attFile << studentEmail << ";" << discipline << ";" << date << ";" << (present ? "P" : "F") << "\n";
             attFile.close();
 
             // 6. Recalcula presença no arquivo enrollment
-            std::ifstream inFile("data/attendance.txt");
+            ifstream inFile("data/attendance.txt");
             int total = 0, presentes = 0;
-            std::string line;
+            string line;
             while (getline(inFile, line)) {
-                std::istringstream ss(line);
-                std::string fEmail, fCourse, fDate, fStatus;
+                istringstream ss(line);
+                string fEmail, fCourse, fDate, fStatus;
                 getline(ss, fEmail, ';');
                 getline(ss, fCourse, ';');
                 getline(ss, fDate, ';');
@@ -725,14 +778,14 @@ void registerAttendance(const string& teacherEmail) {
             double percent = (total > 0) ? (presentes * 100.0 / total) : 0.0;
 
             // Atualiza enrollments
-            std::ifstream enrFile("data/enrollments.txt");
-            std::ostringstream tempContent;
+            ifstream enrFile("data/enrollments.txt");
+            ostringstream tempContent;
             bool found = false;
             while (getline(enrFile, line)) {
-                std::istringstream ss(line);
-                std::string eEmail, eCourse;
+                istringstream ss(line);
+                string eEmail, eCourse;
                 double grade, attPercent;
-                std::string status;
+                string status;
 
                 getline(ss, eEmail, ';');
                 getline(ss, eCourse, ';');
@@ -744,9 +797,17 @@ void registerAttendance(const string& teacherEmail) {
 
                 if (eEmail == studentEmail && eCourse == discipline) {
                     found = true;
-                    status = (grade >=6 && percent >=75) ? "Aprovado" : "Reprovado";
-                    tempContent << eEmail << ";" << eCourse << ";" << grade << ";" 
-                                << std::fixed << std::setprecision(1) << percent << ";" << status << "\n";
+                    if (grade >= 60 && percent >= 75)
+                        status = "Aprovado";
+                    else if (grade >= 30 && grade < 60 && percent >= 50)
+                        status = "Recuperação";
+                    else
+                        status = "Reprovado";
+
+                    tempContent << eEmail << ";" << eCourse << ";" 
+                                << grade << ";" 
+                                << fixed << setprecision(1) << percent << ";" 
+                                << status << "\n";
                 } else {
                     tempContent << line << "\n";
                 }
@@ -754,12 +815,22 @@ void registerAttendance(const string& teacherEmail) {
             enrFile.close();
 
             if (!found) {
-                std::string status = (percent >=75) ? "Aprovado" : "Reprovado";
-                tempContent << studentEmail << ";" << discipline << ";0;" 
-                            << std::fixed << std::setprecision(1) << percent << ";" << status << "\n";
+                double grade = 0;
+                string status;
+                if (grade >= 60 && percent >= 75)
+                    status = "Aprovado";
+                else if (grade >= 30 && grade < 60 && percent >= 50)
+                    status = "Recuperação";
+                else
+                    status = "Reprovado";
+
+                tempContent << studentEmail << ";" << discipline << ";" 
+                            << grade << ";" 
+                            << fixed << setprecision(1) << percent << ";" 
+                            << status << "\n";
             }
 
-            std::ofstream outFile("data/enrollments.txt");
+            ofstream outFile("data/enrollments.txt");
             outFile << tempContent.str();
             outFile.close();
 
@@ -792,14 +863,14 @@ void viewGrades(const string& studentEmail) {
     bool found = false;
 
     setColor("blue");
-    cout << "\n------------------- SUAS NOTAS --------------------\n";
+    cout << "\n----------------------- SUAS NOTAS ------------------------\n";
     resetColor();
 
     cout << left << setw(25) << "Disciplina" 
               << setw(8) << "Nota" 
               << setw(12) << "Freq(%)" 
               << "Status\n";
-    cout << "---------------------------------------------------\n";
+    cout << "-----------------------------------------------------------\n";
 
     while (getline(inFile, line)) {
         istringstream ss(line);
@@ -826,6 +897,10 @@ void viewGrades(const string& studentEmail) {
     if (!found) {
         setColor("red");
         cout << "Nenhuma disciplina encontrada.\n";
+        resetColor();
+    } else {
+        setColor("blue");
+        cout << "-----------------------------------------------------------\n";
         resetColor();
     }
 }
@@ -871,6 +946,10 @@ void viewAttendance(const string& studentEmail) {
     if (!found) {
         setColor("red");
         cout << "Nenhum registro encontrado para este aluno.\n";
+        resetColor();
+    } else {
+        setColor("blue");
+        cout << "-----------------------------------------------\n";
         resetColor();
     }
 }

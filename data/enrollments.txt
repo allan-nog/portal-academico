@@ -1,0 +1,4 @@
+allan@aluno.elite.br;Calculo II;5;100.0;Reprovado
+allan@aluno.elite.br;Algoritmos III;9.9;50.0;Reprovado
+gustavo@aluno.elite.br;Algoritmos II;5.6;100.0;Reprovado
+gustavo@aluno.elite.br;Calculo II;7.2;100.0;Aprovado

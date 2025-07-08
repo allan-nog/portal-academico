@@ -1,0 +1,5 @@
+allan@aluno.elite.br;Calculo II;2025-07-08;P
+gustavo@aluno.elite.br;Calculo II;2025-07-08;P
+allan@aluno.elite.br;Algoritmos III;2025-07-03;F
+allan@aluno.elite.br;Algoritmos III;2025-07-08;P
+gustavo@aluno.elite.br;Algoritmos II;2025-07-08;P
