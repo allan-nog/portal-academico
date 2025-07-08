@@ -5,35 +5,27 @@ Um checklist simplificado para acompanhar melhorias futuras e pendências técni
 ---
 
 ## 🔥 Funcionalidades futuras
-- [ ] Implementar bloqueio de login temporário (ex: 3 minutos após 5 tentativas falhadas)
-- [ ] Criar logs de auditoria de login (sucesso / falha / IP ou terminal)
-- [ ] Permitir alteração de senha pelo usuário
-- [ ] Adicionar recuperação de senha (via pergunta secreta ou token)
-- [ ] Implementar sistema de permissões (restrições por tipo de usuário)
+- [ ] Exportar dados de frequência, notas e status para CSV
+- [ ] Criar relatórios detalhados por aluno e por disciplina
+- [ ] Permitir que professor cadastre novas disciplinas no sistema
+- [ ] Criar tela/menu do admin para adicionar disciplinas aos cursos
+- [ ] Implementar busca avançada nos requerimentos (por email, por data)
 
 ---
 
 ## 🚀 Melhorias no sistema
-- [ ] Usar `chrono` ou `std::time` para controlar cooldowns e timestamps
-- [ ] Refatorar funções duplicadas (por exemplo, salvar e atualizar arquivos .txt)
-- [ ] Criar um menu de ajuda com instruções rápidas do sistema
-- [ ] Fazer logging interno (em arquivos `.log`) para depuração
-- [ ] Melhorar as mensagens do console com ícones ou emojis
+- [ ] Centralizar lógica de cálculo do status (para evitar repetição futura)
+- [ ] Refatorar `registerGrade` e `registerAttendance` para modularizar partes comuns
+- [ ] Usar enums ou constantes para status ao invés de strings livres
+- [ ] Adicionar logs de ações do professor (quem lançou nota, frequência)
 
 ---
 
 ## 📝 Qualidade e organização do código
-- [ ] Escrever testes unitários para `registerGrade`, `registerAttendance`, `viewGrades`, `viewAttendance`
-- [x] Validar campos e tratar entradas incorretas com `safeReadInt`
-- [x] Organizar geração automática de matrícula e SIAPE
-- [x] Implementar visualização das notas e frequência do aluno
+- [ ] Adicionar testes unitários para validação do status (Aprovado/Recuperação/Reprovado)
+- [ ] Adicionar comentários Doxygen consistentes nos novos métodos
+- [ ] Melhorar separação de responsabilidades em futuros controllers de domínio
 
 ---
 
-## 💡 Observações
-- Estas tarefas não são prioritárias para o MVP, mas garantirão um sistema mais robusto e pronto para evoluir.
-- Atualizar este arquivo conforme surgirem novas ideias ou forem concluídas funcionalidades.
-
----
-
-✅ **Versão atual:** sistema com cadastros, login, menus completos e visualização de notas + frequência.
+✅ **Versão atual:** Portal funcional com cadastro, login, registro de notas, frequência e status automatizado, suportando recuperação.

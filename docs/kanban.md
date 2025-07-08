@@ -5,34 +5,32 @@ Um quadro simples para acompanhar as tarefas, focado no que está **a fazer**, *
 ---
 
 ## 📌 A FAZER
-- Implementar sistema de lançamento de frequência pelo professor
-- Implementar visualização consolidada dos requerimentos por aluno
-- Criar testes unitários para as funções `registerGrade`, `registerAttendance`, `viewGrades`, `viewAttendance`
-- Melhorar modularidade e reaproveitamento de código (refatoração)
+- Criar relatórios detalhados para exibir notas, frequência e status por disciplina e por aluno
+- Implementar sistema para professor lançar disciplinas e vincular aos cursos
+- Permitir cadastro de novas disciplinas pelo administrador
+- Melhorar modularidade do `registerGrade` e `registerAttendance` para evitar repetição
+- Implementar exportação de dados (CSV ou JSON)
+- Criar testes unitários específicos para cálculo do status
 - Documentar novas etapas conforme avanço do projeto
 
 ---
 
 ## 🚧 EM ANDAMENTO
-- Portal do administrador parcialmente implementado (login + menu + CRUD usuários + requerimentos)
-- Professores ainda aguardando telas de lançamento de frequência
+- Sistema de requerimentos inicial funcionando (cadastro e visualização simples), falta refinar buscas e filtragem
 
 ---
 
 ## ✅ FEITO
-- Definição da análise de requisitos e levantamento das funcionalidades
-- Modelagem UML e estruturação das classes
-- Estrutura de pastas do projeto (src/core, src/utils, src/portals, data, docs, tests)
-- Funções utilitárias para console (setColor, resetColor, clearConsole, safeReadInt)
-- Sistema de login para alunos, professores e administrador, com controle de tentativas
-- Menus interativos implementados para aluno, professor e admin
-- Cadastro automático de matrícula e SIAPE com padrão definido
-- Registro de notas implementado (registerGrade)
-- Visualização de notas e frequência implementada (viewGrades e viewAttendance)
-- Documentação detalhada de cada estágio (`stage1` a `stage14`)
+- Cadastro e login de alunos, professores e admin com hash seguro (Argon2id)
+- Gerador automático de matrícula e SIAPE seguindo padrão numérico
+- Cadastro com cursos pré-definidos
+- Sistema de frequência com percentual calculado automaticamente
+- Registro de notas atualizado para 0-100, recalculando situação do aluno (aprovado, recuperação ou reprovado)
+- Persistência em arquivos `.txt` para usuários, matrículas, frequência e requerimentos
+- Lógica robusta de status final implementada em `registerGrade` e `registerAttendance`
 
 ---
 
 ## 📝 Observações
-- Dados atualmente armazenados em arquivos `.txt` na pasta `/data`
-- Priorização em manter o código limpo, modular e documentado para facilitar manutenção e expansão futura
+- Prioridade agora é exibir relatórios claros para consolidar dados para alunos, professores e admin.
+- O kanban deve ser atualizado sempre que novas features forem planejadas ou concluídas.
