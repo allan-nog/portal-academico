@@ -72,7 +72,7 @@ bool loadUser(const std::string& email, const std::string& userType, User* userO
  * @param userOut Ponteiro opcional para retornar dados básicos do User.
  * @return true se encontrado, false se não encontrado.
  */
-bool loadStudentByRegistration(const std::string& registration, User* userOut = nullptr);
+bool loadStudentByRegistration(const std::string& registration, Student& studentOut);
 
 /**
  * @brief Carrega um estudante do arquivo pelo email.
@@ -83,7 +83,7 @@ bool loadStudentByRegistration(const std::string& registration, User* userOut = 
  * @param studentOut Ponteiro para receber o objeto Student carregado.
  * @return true se encontrou, false se não encontrou.
  */
-bool loadStudentByEmail(const std::string& email, Student* studentOut);
+bool loadStudentByEmail(const std::string& email, Student& studentOut);
 
 /**
  * @brief Registra um novo usuário (student ou teacher) interativamente via terminal.

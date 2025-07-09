@@ -16,6 +16,11 @@ private:
     std::vector<Course> enrolledCourses; ///< Lista de disciplinas em que o aluno está matriculado
 public: 
     /**
+     * @brief Construtor padrão (necessário para criar objetos vazios e depois preencher).
+     */
+    Student() : registration(""), course(""), period(0) {}
+
+    /**
      * @brief Construtor do Student
      * @param name Nome completo do aluno
      * @param email Email institucional ou pessoal

@@ -1,5 +1,5 @@
 allan@aluno.elite.br;Calculo II;58;100.0;Recuperação
-allan@aluno.elite.br;Algoritmos III;99;50.0;Reprovado
+allan@aluno.elite.br;Algoritmos III;87;50.0;Reprovado
 gustavo@aluno.elite.br;Algoritmos II;5.6;100.0;Reprovado
 gustavo@aluno.elite.br;Calculo II;100;100.0;Aprovado
 allan@aluno.elite.br;Banco de Dados;79;0.0;Reprovado

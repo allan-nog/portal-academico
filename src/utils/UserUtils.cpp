@@ -139,66 +139,54 @@ bool loadUser(const string& email, const string& userType, User* userOut) {
     return false; // Não encontrado
 }
 
-bool loadStudentByRegistration(const string& registration, User* userOut) {
-    ifstream inFile("data/students.txt");
-    if (!inFile) {
-        setColor("red");
-        cerr << "Erro ao abrir o arquivo: data/students.txt\n";
-        resetColor();
-        return false;
-    }
+bool loadStudentByRegistration(const std::string& registration, Student& studentOut) {
+    std::ifstream inFile("data/students.txt");
+    if (!inFile) return false;
 
-    string line;
+    std::string line;
     while (getline(inFile, line)) {
-        istringstream ss(line);
-        string name, email, password, regFile, rest;
+        std::istringstream ss(line);
+        std::string name, email, password, reg, course;
+        int period;
 
         getline(ss, name, ';');
         getline(ss, email, ';');
         getline(ss, password, ';');
-        getline(ss, regFile, ';');
-        getline(ss, rest);
+        getline(ss, reg, ';');
+        getline(ss, course, ';');
+        ss >> period;
 
-        if (regFile == registration) {
-            if (userOut != nullptr) {
-                *userOut = User(name, email, password);
-            }
+        if (reg == registration) {
+            studentOut = Student(name, email, password, reg, course, period);
             return true;
         }
     }
     return false;
 }
 
-bool loadStudentByEmail(const std::string& email, Student* studentOut) {
+bool loadStudentByEmail(const std::string& email, Student& studentOut) {
     std::ifstream inFile("data/students.txt");
-    if (!inFile) {
-        setColor("red");
-        std::cerr << "Erro ao abrir o arquivo data/students.txt\n";
-        resetColor();
-        return false;
-    }
+    if (!inFile) return false;
 
     std::string line;
     while (getline(inFile, line)) {
         std::istringstream ss(line);
-        std::string name, storedEmail, hashedPassword, registration, course;
+        std::string name, emailFile, password, reg, course;
         int period;
 
         getline(ss, name, ';');
-        getline(ss, storedEmail, ';');
-        getline(ss, hashedPassword, ';');
-        getline(ss, registration, ';');
+        getline(ss, emailFile, ';');
+        getline(ss, password, ';');
+        getline(ss, reg, ';');
         getline(ss, course, ';');
         ss >> period;
 
-        if (storedEmail == email) {
-            if (studentOut != nullptr) {
-                *studentOut = Student(name, storedEmail, hashedPassword, registration, course, period);
-            }
+        if (emailFile == email) {
+            studentOut = Student(name, emailFile, password, reg, course, period);
             return true;
         }
     }
-    return false; // não encontrado
+    return false;
 }
 
 // Função principal para registro de usuário
@@ -639,7 +627,7 @@ void registerGrade(const string& teacherEmail) {
         string studentEmail, registration, discipline;
         double grade;
         bool found = false;
-        User student;
+        Student student;
 
         setColor("blue");
         cout << "\n-------------- REGISTRO DE NOTAS --------------\n";
@@ -654,7 +642,7 @@ void registerGrade(const string& teacherEmail) {
             cout << "Matrícula do aluno: ";
             getline(cin, registration);
 
-            if (!loadStudentByRegistration(registration, &student)) {
+            if (!loadStudentByRegistration(registration, student)) {
                 setColor("red");
                 cout << "Aluno não encontrado.\n";
                 resetColor();
@@ -667,18 +655,19 @@ void registerGrade(const string& teacherEmail) {
             cout << "Email do aluno: ";
             getline(cin, studentEmail);
 
-            if (!loadUser(studentEmail, "student", &student)) {
+            if (!loadStudentByEmail(studentEmail, student)) {
                 setColor("red");
                 cout << "Aluno não encontrado.\n";
                 resetColor();
             } else {
+                registration = student.getRegistration();
                 found = true;
             }
         }
 
         if (found) {
             cout << "Aluno encontrado: " << student.getName()
-                 << " | Matrícula: " << (registration.empty() ? "[não carregada]" : registration)
+                 << " | Matrícula: " << student.getRegistration()
                  << " | Email: " << student.getEmail() << "\n";
 
             cout << "Disciplina: ";
@@ -750,7 +739,8 @@ void registerGrade(const string& teacherEmail) {
                 else
                     status = "Reprovado";
 
-                tempContent << studentEmail << ";" << discipline << ";" << grade << ";0;" << status << "\n";
+                tempContent << studentEmail << ";" << discipline << ";" << grade 
+                            << ";0;" << status << "\n";
             }
 
             ofstream outFile("data/enrollments.txt");
@@ -776,7 +766,7 @@ void registerAttendance(const string& teacherEmail) {
     while (true) {
         string studentEmail, registration, discipline, date;
         bool found = false;
-        User student;
+        Student student;
 
         setColor("blue");
         cout << "\n------------ REGISTRO DE FREQUÊNCIA ------------\n";
@@ -791,7 +781,7 @@ void registerAttendance(const string& teacherEmail) {
             cout << "Matrícula do aluno: ";
             getline(cin, registration);
 
-            if (!loadStudentByRegistration(registration, &student)) {
+            if (!loadStudentByRegistration(registration, student)) {
                 setColor("red");
                 cout << "Aluno não encontrado.\n";
                 resetColor();
@@ -804,7 +794,7 @@ void registerAttendance(const string& teacherEmail) {
             cout << "Email do aluno: ";
             getline(cin, studentEmail);
 
-            if (!loadUser(studentEmail, "student", &student)) {
+            if (!loadStudentByEmail(studentEmail, student)) {
                 setColor("red");
                 cout << "Aluno não encontrado.\n";
                 resetColor();
@@ -815,7 +805,7 @@ void registerAttendance(const string& teacherEmail) {
 
         if (found) {
             cout << "Aluno encontrado: " << student.getName()
-                 << " | Matrícula: " << (registration.empty() ? "[não carregada]" : registration)
+                 << " | Matrícula: " << student.getRegistration()
                  << " | Email: " << student.getEmail() << "\n";
 
             cout << "Disciplina: ";

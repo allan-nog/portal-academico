@@ -14,6 +14,11 @@ private:
     std::vector<Course> teachingCourses; ///< Lista de disciplinas que o professor ministra
 public:
     /**
+     * @brief Construtor padrão (necessário para criar objetos vazios e depois preencher).
+     */
+    Teacher() : siape("") {}
+
+    /**
      * @brief Construtor do Teacher
      * @param name Nome completo do professor
      * @param email Email institucional
