@@ -1,0 +1,65 @@
+Engenharia de Software;1;AT01;Atividade Complementar I
+Engenharia de Software;1;C01;Algoritmos e Estrutura de Dados I
+Engenharia de Software;1;E01;Circuitos Elétricos em Corrente Contínua
+Engenharia de Software;1;M01;Matemática Aplicada à Engenharia
+Engenharia de Software;1;M02;Álgebra e Geometria Analítica
+Engenharia de Software;1;Q01;Química e Ciências dos Materiais
+
+Engenharia de Software;2;AT02;Atividade Complementar II
+Engenharia de Software;2;C02;Algoritmos e Estrutura de Dados II
+Engenharia de Software;2;F01;Física I
+Engenharia de Software;2;E10;Desenho de Circuitos
+Engenharia de Software;2;M03;Cálculo Aplicado a Engenharia I
+Engenharia de Software;2;M10;Matemática Discreta
+
+Engenharia de Software;3;AT03;Atividade Complementar III
+Engenharia de Software;3;C03;Algoritmos e Estrutura de Dados III
+Engenharia de Software;3;C04;Linguagens de Programação e Compiladores
+Engenharia de Software;3;F02;Física II
+Engenharia de Software;3;E07;Eletrônica Digital I
+Engenharia de Software;3;M04;Cálculo Aplicado a Engenharia II
+
+Engenharia de Software;4;AT04;Atividade Complementar IV
+Engenharia de Software;4;F03;Física III
+Engenharia de Software;4;E08;Eletrônica Digital II
+Engenharia de Software;4;M05;Cálculo Aplicado a Engenharia III
+Engenharia de Software;4;S01;Paradigmas da Programação
+Engenharia de Software;4;S05;Interação Homem Máquina
+
+Engenharia de Software;5;AT05;Atividade Complementar V
+Engenharia de Software;5;F04;Física IV
+Engenharia de Software;5;C06;Programação Orientada a Objetos com Java
+Engenharia de Software;5;C07;Banco de Dados
+Engenharia de Software;5;E09;Sistemas Microcontrolados e Microprocessados
+Engenharia de Software;5;M11;Probabilidade e Processos Estocásticos
+
+Engenharia de Software;6;AT06;Atividade Complementar VI
+Engenharia de Software;6;C11;Ciência de Dados com Python
+Engenharia de Software;6;C14;Engenharia de Software
+Engenharia de Software;6;M06;Cálculo Numérico e Estatística
+Engenharia de Software;6;S03;Arquiteturas de Software
+Engenharia de Software;6;T02;Redes de Dados I
+
+Engenharia de Software;7;AT07;Atividade Complementar VII
+Engenharia de Software;7;C09;Computação Gráfica Multimídia
+Engenharia de Software;7;C10;Inteligência Artificial
+Engenharia de Software;7;S02;Banco de Dados II
+Engenharia de Software;7;S07;Qualidade, Gerência de Config e Evolução de Software
+Engenharia de Software;7;S08;Disciplina Eletiva I
+
+Engenharia de Software;8;AT08;Atividade Complementar VIII
+Engenharia de Software;8;C12;Sistemas Operacionais
+Engenharia de Software;8;M09;Otimização
+Engenharia de Software;8;S06;Engenharia de Produto de Software
+Engenharia de Software;8;S09;Disciplina Eletiva II
+Engenharia de Software;8;T03;Redes de Dados II
+
+Engenharia de Software;9;AT09;Atividade Complementar IX
+Engenharia de Software;9;C16;Tópicos Especiais I
+Engenharia de Software;9;EST1;Estágio
+
+Engenharia de Software;10;AT10;Atividade Complementar X
+Engenharia de Software;10;C15;Sistemas Distribuídos
+Engenharia de Software;10;C17;Tópicos Especiais II
+Engenharia de Software;10;C18;Tópicos Especiais III
+Engenharia de Software;10;TCC;Trabalho de Conclusão de Curso
