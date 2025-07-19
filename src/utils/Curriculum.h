@@ -41,7 +41,7 @@ std::vector<CurriculumItem> listMandatoryCourses(const std::vector<CurriculumIte
 /**
  * @brief Verifica se uma disciplina faz parte da grade obrigatória do curso e período.
  * 
- * Pode ser usado para garantir que o professor só lance nota/frequência de disciplinas válidas
+ * Pode ser usado para garantir que o professor só lance nota/frequência de disciplinas válidas.
  * que o aluno esteja realmente matriculado.
  * 
  * @param curriculum Estrutura completa do currículo

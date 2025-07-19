@@ -1,9 +1,12 @@
 #pragma once
 #include <string>
 
+/**
+ * @brief Estrutura simples representando uma disciplina (Course).
+ */
 struct Course {
-    std::string name; // nome da disciplina
-    int hours;  // carga horária
+    std::string name;  ///< Nome da disciplina
+    int hours;         ///< Carga horária
 };
 
 /**
@@ -22,12 +25,12 @@ public:
     User() : name(""), email(""), password("") {}
 
     /**
-     * @brief Construtor com parâmetros.
-     * @param name Nome do usuário.
-     * @param email Email do usuário.
-     * @param password Senha (ou hash).
+     * @brief Construtor parametrizado.
+     * @param name Nome do usuário
+     * @param email Email do usuário
+     * @param password Senha (ou hash) do usuário
      */
-    User(const std::string& name, const std::string& email, const std::string& password);
+    explicit User(const std::string& name, const std::string& email, const std::string& password);
 
     /// @return Nome do usuário
     const std::string& getName() const noexcept;
@@ -41,10 +44,10 @@ public:
     void setPassword(const std::string& newPassword) noexcept;
 
     /**
-     * @brief Exibe informações básicas do usuário. Pode ser sobrescrito.
+     * @brief Exibe informações básicas do usuário. Pode ser sobrescrito nas subclasses.
      */
     virtual void printInfo() const;
 
-    /// Destrutor virtual para suportar herança.
+    /// Destrutor virtual para suportar polimorfismo.
     virtual ~User() = default;
 };

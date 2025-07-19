@@ -54,7 +54,7 @@ inline void resetColor() {
 }
 
 /**
- * @brief Limpa o console, independente do SO.
+ * @brief Limpa o console, independente do Sistema Operacional.
  */
 inline void clearConsole() {
     std::cout << std::flush;

@@ -11,7 +11,7 @@
 class Teacher : public User {
 private:
     std::string siape; ///< Número SIAPE (identificador de servidor público)
-    std::vector<Course> teachingCourses; ///< Lista de disciplinas que o professor ministra
+    std::vector<Course> teachingCourses; ///< Lista de disciplinas ministradas pelo professor
 public:
     /**
      * @brief Construtor padrão (necessário para criar objetos vazios e depois preencher).
@@ -19,16 +19,18 @@ public:
     Teacher() : siape("") {}
 
     /**
-     * @brief Construtor do Teacher
+     * @brief Construtor do Teacher.
      * @param name Nome completo do professor
      * @param email Email institucional
      * @param password Hash da senha
      * @param siape Número SIAPE
      */
-    Teacher(const std::string &name, const std::string &email, const std::string &password, std::string siape);
+    Teacher(const std::string &name, const std::string &email, const std::string &password, const std::string &siape);
 
+    /// @return SIAPE do professor
     std::string getSiape() const noexcept;
-    void setSiape(std::string newSiape) noexcept;
+    /// Define um novo SIAPE
+    void setSiape(const std::string &newSiape) noexcept;
 
     /**
      * @brief Adiciona uma disciplina à lista de disciplinas ministradas.

@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "../core/User.h"
 #include "../core/Student.h"
 #include "../core/Teacher.h"
+#include "Curriculum.h"
 
 
 /**
@@ -158,25 +160,24 @@ void listRequests();
 
 
 /**
- * @brief Permite ao professor registrar ou atualizar a nota de um aluno em uma disciplina.
+ * @brief Permite o professor lançar ou atualizar notas do aluno em disciplinas obrigatórias.
  * 
- * Atualiza ou cria o registro no arquivo data/enrollments.txt.
- * Recalcula o status (Aprovado/Reprovado) automaticamente.
+ * Exige verificar currículo para validar a disciplina.
  * 
- * @param teacherEmail Email do professor logado (opcional para log/auditoria futura).
+ * @param teacherEmail Email do professor logado.
+ * @param curriculum Vetor do currículo carregado com as disciplinas.
  */
-void registerGrade(const std::string& teacherEmail);
-
+void registerGrade(const std::string& teacherEmail, const std::vector<CurriculumItem>& curriculum);
 
 /**
- * @brief Permite ao professor registrar presença ou falta do aluno e recalcula frequência.
+ * @brief Permite o professor registrar frequência do aluno em disciplinas obrigatórias.
  * 
- * Atualiza attendance.txt e depois ajusta percentuais em enrollments.txt.
+ * Exige verificar currículo para validar a disciplina.
  * 
- * @param teacherEmail Email do professor logado (para logs futuros).
+ * @param teacherEmail Email do professor logado.
+ * @param curriculum Vetor do currículo carregado com as disciplinas.
  */
-void registerAttendance(const std::string& teacherEmail);
-
+void registerAttendance(const std::string& teacherEmail, const std::vector<CurriculumItem>& curriculum);
 
 /**
  * @brief Permite ao aluno visualizar suas notas e situação final em cada disciplina.

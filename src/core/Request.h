@@ -11,7 +11,11 @@ private:
     std::string timestamp;    ///< Data e hora do requerimento (YYYY-MM-DD HH:MM:SS)
 public:
     Request() = default;
-    Request(const std::string& studentEmail, const std::string& description, const std::string& timestamp);
+
+    /**
+     * @brief Construtor principal.
+     */
+    explicit Request(const std::string& studentEmail, const std::string& description, const std::string& timestamp);
 
     const std::string& getStudentEmail() const noexcept;
     const std::string& getDescription() const noexcept;

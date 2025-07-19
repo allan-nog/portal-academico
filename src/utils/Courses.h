@@ -3,7 +3,9 @@
 #include <string>
 
 /**
- * @brief Retorna uma lista fixa com os cursos disponíveis do sistema.
+ * @brief Retorna a lista fixa de cursos disponíveis no sistema acadêmico.
+ * 
+ * Esta função é usada para validar o curso no momento do cadastro de estudantes.
  * 
  * Cursos disponíveis:
  * - Engenharia de Software
@@ -12,12 +14,10 @@
  * - Sistemas de Informação
  * - Redes de Computadores
  * - Análise e Desenvolvimento de Sistemas
- * - Segurança da informação
+ * - Segurança da Informação
  * - Ciência de Dados
  * 
- * Usado para garantir dados válidos no cadastro de alunos.
- * 
- * @return const std::vector<std::string>& com os nomes dos cursos.
+ * @return Referência constante para vetor de strings com os nomes dos cursos.
  */
 inline const std::vector<std::string>& getAvailableCourses() {
     static const std::vector<std::string> courses = {
@@ -27,7 +27,7 @@ inline const std::vector<std::string>& getAvailableCourses() {
         "Sistemas de Informação",
         "Redes de Computadores",
         "Análise e Desenvolvimento de Sistemas",
-        "Segurança da informação",
+        "Segurança da Informação",
         "Ciência de Dados"
     };
     return courses;

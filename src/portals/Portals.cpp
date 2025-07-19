@@ -1,11 +1,12 @@
 #include <iostream>
 #include "../utils/ConsoleUtils.h"
 #include "../utils/UserUtils.h"
+#include "../utils/Curriculum.h"
 #include "../core/User.h"
 #include "Portals.h"
 using namespace std;
 
-void studentPortal(){
+void studentPortal(const vector<CurriculumItem>& curriculum){
     int studentOption;
     while (true) {
         setColor("blue");
@@ -47,7 +48,7 @@ void studentPortal(){
                         setColor("blue");
                         cout << "-------------------------------------\n";
                         resetColor();
-                        loggedOption = safeReadInt("Selecione uma opção: ");
+                        loggedOption = safeReadInt("Selecione uma opção: ");    
                         clearConsole();
 
                         if (loggedOption == 0) {
@@ -63,7 +64,7 @@ void studentPortal(){
                                 cout << "---------- SEU PERFIL ----------\n";
                                 cout << "Nome: " << user.getName() << "\n";
                                 cout << "Email: " << user.getEmail() << "\n";
-                                cout << "Senha: [oculta]\n"; // apenas para testes
+                                cout << "Senha: [oculta]\n";
                                 resetColor();
                                 break;
                             case 2: {
@@ -101,7 +102,7 @@ void studentPortal(){
     }
 }
 
-void teacherPortal(){
+void teacherPortal(const vector<CurriculumItem>& curriculum) {
     int teacherOption;
     while (true) {
         setColor("blue");
@@ -165,10 +166,10 @@ void teacherPortal(){
                                 break;
                             }
                             case 3:
-                                registerGrade(user.getEmail());
+                                registerGrade(user.getEmail(), curriculum);
                                 break;
                             case 4:
-                                registerAttendance(user.getEmail());
+                                registerAttendance(user.getEmail(), curriculum);
                                 break;
                             default:
                                 setColor("red");
@@ -189,7 +190,7 @@ void teacherPortal(){
     }
 }
 
-void adminPortal(){
+void adminPortal(const vector<CurriculumItem>& curriculum){
     const string adminEmail = "admin@admin.com";
     const string adminPassword = "admin123";
     string email, password;

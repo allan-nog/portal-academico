@@ -4,7 +4,7 @@
 #include <iostream>
 
 /**
- * @brief Carrega o currículo a partir de um arquivo .txt
+ * @brief Carrega o currículo a partir de um arquivo .txt.
  */
 std::vector<CurriculumItem> loadCurriculum(const std::string& filePath) {
     std::vector<CurriculumItem> curriculum;
@@ -33,7 +33,7 @@ std::vector<CurriculumItem> loadCurriculum(const std::string& filePath) {
 }
 
 /**
- * @brief Lista todas as disciplinas obrigatórias do curso e período
+ * @brief Lista todas as disciplinas obrigatórias do curso e período.
  */
 std::vector<CurriculumItem> listMandatoryCourses(const std::vector<CurriculumItem>& curriculum,
                                                  const std::string& course,
@@ -48,7 +48,7 @@ std::vector<CurriculumItem> listMandatoryCourses(const std::vector<CurriculumIte
 }
 
 /**
- * @brief Verifica se disciplina faz parte da grade obrigatória
+ * @brief Verifica se disciplina faz parte da grade obrigatória.
  */
 bool isDisciplineInCurriculum(const std::vector<CurriculumItem>& curriculum,
                               const std::string& course,
