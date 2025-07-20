@@ -142,7 +142,7 @@ bool removeUser(const std::string& userType, const std::string& email);
  * @param currentEmail Email atual para localizar o usuário
  * @return true se atualizado, false caso usuário não encontrado
  */
-bool updateUser(const std::string& userType, const std::string& currentEmail);
+bool updateUser(const std::string& userType, const std::string& currentEmail, bool isAdmin = false);
 
 
 /**

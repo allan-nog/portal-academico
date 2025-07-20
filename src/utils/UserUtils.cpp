@@ -450,7 +450,7 @@ bool removeUser(const string& userType, const string& email) {
     return found;
 }
 
-bool updateUser(const string& userType, const string& currentEmail) {
+bool updateUser(const string& userType, const string& currentEmail, bool isAdmin) {
     string filePath;
     if (userType == "student") filePath = "data/students.txt";
     else if (userType == "teacher") filePath = "data/teachers.txt";
@@ -515,13 +515,15 @@ bool updateUser(const string& userType, const string& currentEmail) {
             } while (true);
 
             // Senha
-            cout << "Senha Atual: ";
-            getline(cin, currentPassword);
-            if (!verifyPassword(currentPassword, password)) {
-                setColor("red");
-                cout << "Senha incorreta. Atualização cancelada.\n";
-                resetColor();
-                return false;
+            if (!isAdmin) {
+                cout << "Senha Atual: ";
+                getline(cin, currentPassword);
+                if (!verifyPassword(currentPassword, password)) {
+                    setColor("red");
+                    cout << "Senha incorreta. Atualização cancelada.\n";
+                    resetColor();
+                    return false;
+                }
             }
             do {
                 cout << "Nova senha (deixe vazio para manter a atual): ";

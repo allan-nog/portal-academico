@@ -296,7 +296,7 @@ void adminPortal(const vector<CurriculumItem>& curriculum){
                                 } else if (updateOption == 2) {
                                     cout << "\nDigite o e-mail atual do professor: ";
                                     getline(cin, email);
-                                    updateUser("teacher", email);
+                                    updateUser("student", email, true);  // Pula verificação de senha
                                 } else {
                                     setColor("red");
                                     cout << "Opção inválida.\n";
