@@ -484,7 +484,7 @@ bool updateUser(const string& userType, const string& currentEmail) {
 
         if (email == currentEmail) {
             found = true;
-            string newName, newEmail, newPassword;
+            string currentPassword, newName, newEmail, newPassword, ConfirmationNewPassword;
 
             // Nome
             do {
@@ -515,6 +515,14 @@ bool updateUser(const string& userType, const string& currentEmail) {
             } while (true);
 
             // Senha
+            cout << "Senha Atual: ";
+            getline(cin, currentPassword);
+            if (!verifyPassword(currentPassword, password)) {
+                setColor("red");
+                cout << "Senha incorreta. Atualização cancelada.\n";
+                resetColor();
+                return false;
+            }
             do {
                 cout << "Nova senha (deixe vazio para manter a atual): ";
                 getline(cin, newPassword);
@@ -527,8 +535,16 @@ bool updateUser(const string& userType, const string& currentEmail) {
                     cout << "Senha não atende aos requisitos.\n";
                     resetColor();
                 } else {
-                    newPassword = hashPassword(newPassword);
-                    break;
+                    cout << "Confirme a nova senha: ";
+                    getline(cin, ConfirmationNewPassword);
+                    if (newPassword != ConfirmationNewPassword) {
+                        setColor("red");
+                        cout << "As senhas não coincidem.\n";
+                        resetColor();
+                    } else {
+                        newPassword = hashPassword(newPassword);
+                        break;
+                    }
                 }
             } while (true);
 
@@ -674,7 +690,7 @@ void registerGrade(const string& teacherEmail, const vector<CurriculumItem>& cur
                  << " | Período: " << student.getPeriod()
                  << "\n";
 
-            cout << "Código da disciplina (ex: C01): ";
+            cout << "\nCódigo da disciplina (ex: C01): ";
             getline(cin, disciplineCode);
 
             // Verifica se disciplina faz parte do currículo

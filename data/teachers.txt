@@ -1,0 +1,1 @@
+Vanessa Carvalho Pinto;vanessa@elite.br;$argon2id$v=19$m=262144,t=3,p=1$lrcXYdDU3++c0tV2i13S6w$+IvfQbmM1EtfMdsWhp/SF2GJtbfdaFL1pBZPkv9IsPA;202507995129

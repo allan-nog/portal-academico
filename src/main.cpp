@@ -22,14 +22,14 @@ int main() {
     int option;
     while (true) {
         setColor("blue");
-        cout << "\n=========== PORTAL ACADÊMICO ===========\n";
+        cout << "\n---------- PORTAL ACADÊMICO ----------\n";
         resetColor();
         cout << "[1] - Portal do Aluno\n";
         cout << "[2] - Portal do Professor\n";
         cout << "[3] - Portal do Administrador\n";
         cout << "[0] - Sair\n";
         setColor("blue");
-        cout << "========================================\n";
+        cout << "--------------------------------------\n";
         resetColor();
         option = safeReadInt("Escolha uma opção: ");
         clearConsole();
@@ -46,7 +46,7 @@ int main() {
                 break;
             case 0:
                 setColor("blue");
-                cout << "\n-------- PROGRAMA ENCERRADO ---------\n";
+                cout << "\n--------- PROGRAMA ENCERRADO ---------\n";
                 resetColor();
                 return 0;
             default:

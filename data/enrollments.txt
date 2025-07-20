@@ -1,0 +1,4 @@
+allan@aluno.elite.br;F03;95.0;75.0;Aprovado
+allan@aluno.elite.br;S01;50.0;0.0;Reprovado
+allan@aluno.elite.br;S05;25.0;100.0;Reprovado
+gustavo@aluno.elite.br;C01;98.0;100.0;Aprovado
